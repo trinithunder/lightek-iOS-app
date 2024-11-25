@@ -1,0 +1,716 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		372C0B582CF23048008BD678 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B572CF23048008BD678 /* SignUpView.swift */; };
+		372C0B5A2CF230C7008BD678 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B592CF230C7008BD678 /* HomeView.swift */; };
+		372C0B5C2CF233B2008BD678 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B5B2CF233B2008BD678 /* SettingsView.swift */; };
+		372C0B5E2CF2342D008BD678 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B5D2CF2342D008BD678 /* UserProfileView.swift */; };
+		372C0B602CF2356D008BD678 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B5F2CF2356D008BD678 /* ChatView.swift */; };
+		372C0B622CF3DA12008BD678 /* HomeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B612CF3DA12008BD678 /* HomeDetailView.swift */; };
+		37F349AE2CF222EF009C232A /* LightekApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349AD2CF222EF009C232A /* LightekApp.swift */; };
+		37F349B02CF222EF009C232A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349AF2CF222EF009C232A /* ContentView.swift */; };
+		37F349B22CF222F4009C232A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37F349B12CF222F4009C232A /* Assets.xcassets */; };
+		37F349B52CF222F4009C232A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37F349B42CF222F4009C232A /* Preview Assets.xcassets */; };
+		37F349BF2CF222F5009C232A /* LightekTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349BE2CF222F5009C232A /* LightekTests.swift */; };
+		37F349C92CF222F5009C232A /* LightekUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349C82CF222F5009C232A /* LightekUITests.swift */; };
+		37F349CB2CF222F5009C232A /* LightekUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349CA2CF222F5009C232A /* LightekUITestsLaunchTests.swift */; };
+		37F349E52CF22596009C232A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349E42CF22596009C232A /* LoginView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		37F349BB2CF222F5009C232A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37F349A22CF222EF009C232A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 37F349A92CF222EF009C232A;
+			remoteInfo = Lightek;
+		};
+		37F349C52CF222F5009C232A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37F349A22CF222EF009C232A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 37F349A92CF222EF009C232A;
+			remoteInfo = Lightek;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		372C0B572CF23048008BD678 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignUpView.swift; path = Lightek/Login/SignUpView.swift; sourceTree = SOURCE_ROOT; };
+		372C0B592CF230C7008BD678 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeView.swift; path = Lightek/SignUp/HomeView.swift; sourceTree = SOURCE_ROOT; };
+		372C0B5B2CF233B2008BD678 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		372C0B5D2CF2342D008BD678 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
+		372C0B5F2CF2356D008BD678 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		372C0B612CF3DA12008BD678 /* HomeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailView.swift; sourceTree = "<group>"; };
+		37F349AA2CF222EF009C232A /* Lightek.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lightek.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		37F349AD2CF222EF009C232A /* LightekApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightekApp.swift; sourceTree = "<group>"; };
+		37F349AF2CF222EF009C232A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		37F349B12CF222F4009C232A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		37F349B42CF222F4009C232A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		37F349BA2CF222F5009C232A /* LightekTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LightekTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		37F349BE2CF222F5009C232A /* LightekTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightekTests.swift; sourceTree = "<group>"; };
+		37F349C42CF222F5009C232A /* LightekUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LightekUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		37F349C82CF222F5009C232A /* LightekUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightekUITests.swift; sourceTree = "<group>"; };
+		37F349CA2CF222F5009C232A /* LightekUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightekUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		37F349E42CF22596009C232A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		37F349A72CF222EF009C232A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		37F349B72CF222F5009C232A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		37F349C12CF222F5009C232A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		37F349A12CF222EF009C232A = {
+			isa = PBXGroup;
+			children = (
+				37F349AC2CF222EF009C232A /* Lightek */,
+				37F349BD2CF222F5009C232A /* LightekTests */,
+				37F349C72CF222F5009C232A /* LightekUITests */,
+				37F349AB2CF222EF009C232A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		37F349AB2CF222EF009C232A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				37F349AA2CF222EF009C232A /* Lightek.app */,
+				37F349BA2CF222F5009C232A /* LightekTests.xctest */,
+				37F349C42CF222F5009C232A /* LightekUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		37F349AC2CF222EF009C232A /* Lightek */ = {
+			isa = PBXGroup;
+			children = (
+				37F349E32CF22557009C232A /* Settings */,
+				37F349E02CF22509009C232A /* Services */,
+				37F349DF2CF224BC009C232A /* Subscription */,
+				37F349DE2CF224AE009C232A /* Notification */,
+				37F349DD2CF2246D009C232A /* Chat */,
+				37F349DC2CF22457009C232A /* Home */,
+				37F349DB2CF2240E009C232A /* Shared */,
+				37F349DA2CF223F2009C232A /* User */,
+				37F349D92CF223DF009C232A /* Video */,
+				37F349D82CF2236E009C232A /* SignUp */,
+				37F349D72CF22317009C232A /* Login */,
+				37F349B12CF222F4009C232A /* Assets.xcassets */,
+				37F349B32CF222F4009C232A /* Preview Content */,
+			);
+			path = Lightek;
+			sourceTree = "<group>";
+		};
+		37F349B32CF222F4009C232A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				37F349B42CF222F4009C232A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		37F349BD2CF222F5009C232A /* LightekTests */ = {
+			isa = PBXGroup;
+			children = (
+				37F349BE2CF222F5009C232A /* LightekTests.swift */,
+			);
+			path = LightekTests;
+			sourceTree = "<group>";
+		};
+		37F349C72CF222F5009C232A /* LightekUITests */ = {
+			isa = PBXGroup;
+			children = (
+				37F349C82CF222F5009C232A /* LightekUITests.swift */,
+				37F349CA2CF222F5009C232A /* LightekUITestsLaunchTests.swift */,
+			);
+			path = LightekUITests;
+			sourceTree = "<group>";
+		};
+		37F349D72CF22317009C232A /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				37F349E42CF22596009C232A /* LoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		37F349D82CF2236E009C232A /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				372C0B572CF23048008BD678 /* SignUpView.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		37F349D92CF223DF009C232A /* Video */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		37F349DA2CF223F2009C232A /* User */ = {
+			isa = PBXGroup;
+			children = (
+				372C0B5D2CF2342D008BD678 /* UserProfileView.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		37F349DB2CF2240E009C232A /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				37F349AF2CF222EF009C232A /* ContentView.swift */,
+				37F349AD2CF222EF009C232A /* LightekApp.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		37F349DC2CF22457009C232A /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				372C0B592CF230C7008BD678 /* HomeView.swift */,
+				372C0B612CF3DA12008BD678 /* HomeDetailView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		37F349DD2CF2246D009C232A /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				372C0B5F2CF2356D008BD678 /* ChatView.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		37F349DE2CF224AE009C232A /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		37F349DF2CF224BC009C232A /* Subscription */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Subscription;
+			sourceTree = "<group>";
+		};
+		37F349E02CF22509009C232A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				37F349E22CF22530009C232A /* Edit */,
+				37F349E12CF22526009C232A /* Add */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		37F349E12CF22526009C232A /* Add */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Add;
+			sourceTree = "<group>";
+		};
+		37F349E22CF22530009C232A /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
+		37F349E32CF22557009C232A /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				372C0B5B2CF233B2008BD678 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		37F349A92CF222EF009C232A /* Lightek */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 37F349CE2CF222F5009C232A /* Build configuration list for PBXNativeTarget "Lightek" */;
+			buildPhases = (
+				37F349A62CF222EF009C232A /* Sources */,
+				37F349A72CF222EF009C232A /* Frameworks */,
+				37F349A82CF222EF009C232A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Lightek;
+			productName = Lightek;
+			productReference = 37F349AA2CF222EF009C232A /* Lightek.app */;
+			productType = "com.apple.product-type.application";
+		};
+		37F349B92CF222F5009C232A /* LightekTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 37F349D12CF222F5009C232A /* Build configuration list for PBXNativeTarget "LightekTests" */;
+			buildPhases = (
+				37F349B62CF222F5009C232A /* Sources */,
+				37F349B72CF222F5009C232A /* Frameworks */,
+				37F349B82CF222F5009C232A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				37F349BC2CF222F5009C232A /* PBXTargetDependency */,
+			);
+			name = LightekTests;
+			productName = LightekTests;
+			productReference = 37F349BA2CF222F5009C232A /* LightekTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		37F349C32CF222F5009C232A /* LightekUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 37F349D42CF222F5009C232A /* Build configuration list for PBXNativeTarget "LightekUITests" */;
+			buildPhases = (
+				37F349C02CF222F5009C232A /* Sources */,
+				37F349C12CF222F5009C232A /* Frameworks */,
+				37F349C22CF222F5009C232A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				37F349C62CF222F5009C232A /* PBXTargetDependency */,
+			);
+			name = LightekUITests;
+			productName = LightekUITests;
+			productReference = 37F349C42CF222F5009C232A /* LightekUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		37F349A22CF222EF009C232A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1320;
+				LastUpgradeCheck = 1320;
+				TargetAttributes = {
+					37F349A92CF222EF009C232A = {
+						CreatedOnToolsVersion = 13.2;
+					};
+					37F349B92CF222F5009C232A = {
+						CreatedOnToolsVersion = 13.2;
+						TestTargetID = 37F349A92CF222EF009C232A;
+					};
+					37F349C32CF222F5009C232A = {
+						CreatedOnToolsVersion = 13.2;
+						TestTargetID = 37F349A92CF222EF009C232A;
+					};
+				};
+			};
+			buildConfigurationList = 37F349A52CF222EF009C232A /* Build configuration list for PBXProject "Lightek" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 37F349A12CF222EF009C232A;
+			productRefGroup = 37F349AB2CF222EF009C232A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				37F349A92CF222EF009C232A /* Lightek */,
+				37F349B92CF222F5009C232A /* LightekTests */,
+				37F349C32CF222F5009C232A /* LightekUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		37F349A82CF222EF009C232A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37F349B52CF222F4009C232A /* Preview Assets.xcassets in Resources */,
+				37F349B22CF222F4009C232A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		37F349B82CF222F5009C232A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		37F349C22CF222F5009C232A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		37F349A62CF222EF009C232A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				372C0B622CF3DA12008BD678 /* HomeDetailView.swift in Sources */,
+				372C0B5E2CF2342D008BD678 /* UserProfileView.swift in Sources */,
+				372C0B582CF23048008BD678 /* SignUpView.swift in Sources */,
+				37F349E52CF22596009C232A /* LoginView.swift in Sources */,
+				37F349B02CF222EF009C232A /* ContentView.swift in Sources */,
+				372C0B602CF2356D008BD678 /* ChatView.swift in Sources */,
+				372C0B5C2CF233B2008BD678 /* SettingsView.swift in Sources */,
+				372C0B5A2CF230C7008BD678 /* HomeView.swift in Sources */,
+				37F349AE2CF222EF009C232A /* LightekApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		37F349B62CF222F5009C232A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37F349BF2CF222F5009C232A /* LightekTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		37F349C02CF222F5009C232A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37F349C92CF222F5009C232A /* LightekUITests.swift in Sources */,
+				37F349CB2CF222F5009C232A /* LightekUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		37F349BC2CF222F5009C232A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 37F349A92CF222EF009C232A /* Lightek */;
+			targetProxy = 37F349BB2CF222F5009C232A /* PBXContainerItemProxy */;
+		};
+		37F349C62CF222F5009C232A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 37F349A92CF222EF009C232A /* Lightek */;
+			targetProxy = 37F349C52CF222F5009C232A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		37F349CC2CF222F5009C232A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		37F349CD2CF222F5009C232A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		37F349CF2CF222F5009C232A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Lightek/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ltek-sys.Lightek";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		37F349D02CF222F5009C232A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Lightek/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ltek-sys.Lightek";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		37F349D22CF222F5009C232A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ltek-sys.LightekTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lightek.app/Lightek";
+			};
+			name = Debug;
+		};
+		37F349D32CF222F5009C232A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ltek-sys.LightekTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lightek.app/Lightek";
+			};
+			name = Release;
+		};
+		37F349D52CF222F5009C232A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ltek-sys.LightekUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Lightek;
+			};
+			name = Debug;
+		};
+		37F349D62CF222F5009C232A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ltek-sys.LightekUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Lightek;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		37F349A52CF222EF009C232A /* Build configuration list for PBXProject "Lightek" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37F349CC2CF222F5009C232A /* Debug */,
+				37F349CD2CF222F5009C232A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		37F349CE2CF222F5009C232A /* Build configuration list for PBXNativeTarget "Lightek" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37F349CF2CF222F5009C232A /* Debug */,
+				37F349D02CF222F5009C232A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		37F349D12CF222F5009C232A /* Build configuration list for PBXNativeTarget "LightekTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37F349D22CF222F5009C232A /* Debug */,
+				37F349D32CF222F5009C232A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		37F349D42CF222F5009C232A /* Build configuration list for PBXNativeTarget "LightekUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37F349D52CF222F5009C232A /* Debug */,
+				37F349D62CF222F5009C232A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 37F349A22CF222EF009C232A /* Project object */;
+}
