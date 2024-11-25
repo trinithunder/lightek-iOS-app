@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var selection = 0
-    @State var isUserLoggedIn = false
-    @State var userNeedsToAuth = false
+    @State var userNeedsToAuth = false //Need to get this value from User defaults
     var body: some View {
        TabView(selection: $selection) {
             HomeView().tabItem { Text("Home") }.tag(1)
@@ -19,7 +18,8 @@ struct ContentView: View {
            
            Text("Profile").tabItem { Text("Profile") }.tag(4)
        }.fullScreenCover(isPresented: $userNeedsToAuth) {
-           //Figure out what to do when the user is finally authed here
+           userNeedsToAuth.toggle()
+           //Need to set userNeedsToAuth value in User defaults
        } content: {
            Text("Please sign the fuck in")
        }
