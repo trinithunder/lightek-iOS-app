@@ -13,10 +13,13 @@ struct ContentView: View {
     var body: some View {
        TabView(selection: $selection) {
             HomeView().tabItem { Text("Home") }.tag(1)
-            Text("Orders").tabItem { Text("Orders") }.tag(2)
-           Text("Chats").tabItem { Text("Chats") }.tag(3)
+            OrdersView().tabItem { Text("Orders") }.tag(2)
+           Text("I guess this is a create view").tabItem {
+               Text("+")
+               }.tag(3)
+           ChatView().tabItem { Text("Chats") }.tag(4)
            
-           Text("Profile").tabItem { Text("Profile") }.tag(4)
+        UserProfileView().tabItem { Text("Profile") }.tag(5)
        }.fullScreenCover(isPresented: $userNeedsToAuth) {
            userNeedsToAuth.toggle()
            //Need to set userNeedsToAuth value in User defaults
