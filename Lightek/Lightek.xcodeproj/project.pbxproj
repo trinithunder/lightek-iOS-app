@@ -14,6 +14,8 @@
 		372C0B602CF2356D008BD678 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B5F2CF2356D008BD678 /* ChatView.swift */; };
 		372C0B622CF3DA12008BD678 /* HomeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B612CF3DA12008BD678 /* HomeDetailView.swift */; };
 		372C0B652CF5BF9B008BD678 /* OrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B642CF5BF99008BD678 /* OrdersView.swift */; };
+		372C0B672CF61E74008BD678 /* GateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B662CF61E73008BD678 /* GateKeeper.swift */; };
+		37771EB22CF70733006E3E5A /* HomeHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EB12CF70732006E3E5A /* HomeHub.swift */; };
 		37F349AE2CF222EF009C232A /* LightekApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349AD2CF222EF009C232A /* LightekApp.swift */; };
 		37F349B02CF222EF009C232A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349AF2CF222EF009C232A /* ContentView.swift */; };
 		37F349B22CF222F4009C232A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37F349B12CF222F4009C232A /* Assets.xcassets */; };
@@ -49,6 +51,8 @@
 		372C0B5F2CF2356D008BD678 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		372C0B612CF3DA12008BD678 /* HomeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailView.swift; sourceTree = "<group>"; };
 		372C0B642CF5BF99008BD678 /* OrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersView.swift; sourceTree = "<group>"; };
+		372C0B662CF61E73008BD678 /* GateKeeper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GateKeeper.swift; sourceTree = "<group>"; };
+		37771EB12CF70732006E3E5A /* HomeHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHub.swift; sourceTree = "<group>"; };
 		37F349AA2CF222EF009C232A /* Lightek.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lightek.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37F349AD2CF222EF009C232A /* LightekApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightekApp.swift; sourceTree = "<group>"; };
 		37F349AF2CF222EF009C232A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -197,6 +201,7 @@
 			children = (
 				37F349AF2CF222EF009C232A /* ContentView.swift */,
 				37F349AD2CF222EF009C232A /* LightekApp.swift */,
+				372C0B662CF61E73008BD678 /* GateKeeper.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -206,6 +211,7 @@
 			children = (
 				372C0B592CF230C7008BD678 /* HomeView.swift */,
 				372C0B612CF3DA12008BD678 /* HomeDetailView.swift */,
+				37771EB12CF70732006E3E5A /* HomeHub.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -395,11 +401,13 @@
 			files = (
 				372C0B622CF3DA12008BD678 /* HomeDetailView.swift in Sources */,
 				372C0B5E2CF2342D008BD678 /* UserProfileView.swift in Sources */,
+				372C0B672CF61E74008BD678 /* GateKeeper.swift in Sources */,
 				372C0B582CF23048008BD678 /* SignUpView.swift in Sources */,
 				37F349E52CF22596009C232A /* LoginView.swift in Sources */,
 				37F349B02CF222EF009C232A /* ContentView.swift in Sources */,
 				372C0B652CF5BF9B008BD678 /* OrdersView.swift in Sources */,
 				372C0B602CF2356D008BD678 /* ChatView.swift in Sources */,
+				37771EB22CF70733006E3E5A /* HomeHub.swift in Sources */,
 				372C0B5C2CF233B2008BD678 /* SettingsView.swift in Sources */,
 				372C0B5A2CF230C7008BD678 /* HomeView.swift in Sources */,
 				37F349AE2CF222EF009C232A /* LightekApp.swift in Sources */,

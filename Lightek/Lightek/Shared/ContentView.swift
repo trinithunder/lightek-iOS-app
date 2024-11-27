@@ -10,9 +10,17 @@ import SwiftUI
 struct ContentView: View {
     @State var selection = 0
     @State var userNeedsToAuth = false //Need to get this value from User defaults
+    init() {
+            // Change unselected and selected item colors
+            let tabBarAppearance = UITabBar.appearance()
+            tabBarAppearance.unselectedItemTintColor = UIColor.gray // Default color for unselected items
+            tabBarAppearance.tintColor = UIColor.white // Color for selected items
+            tabBarAppearance.backgroundColor = UIColor.black // Background color (optional)
+        }
+    
     var body: some View {
        TabView(selection: $selection) {
-            HomeView().tabItem { Text("Home") }.tag(1)
+            HomeHub().tabItem { Text("Home") }.tag(1)
             OrdersView().tabItem { Text("Orders") }.tag(2)
            Text("I guess this is a create view").tabItem {
                Text("+")
