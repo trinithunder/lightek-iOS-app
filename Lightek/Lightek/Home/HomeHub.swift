@@ -19,15 +19,18 @@ struct HomeHub: View {
                         VStack{
 //                            Spacer().frame(height:100)
                             Group{
-                                HStack{
-                                    Image(systemName: "magnifyingglass")
-                                        .foregroundColor(.white)
-                                    PlaceholderTextField(placeholder: "Search for events")
-                                    Image(systemName: "gear").foregroundColor(.white)
-                                    Spacer().frame(width:160)
-                                    Image(systemName: "gear").foregroundColor(.white)
-                                    Image(systemName: "gear").foregroundColor(.white)
+                                NavigationLink(destination:SearchView()){
+                                    HStack{
+                                        Image(systemName: "magnifyingglass")
+                                            .foregroundColor(.white)
+                                        PlaceholderTextField(placeholder: "Search for events")
+                                        Image(systemName: "gear").foregroundColor(.white)
+                                        Spacer().frame(width:160)
+                                        Image(systemName: "gear").foregroundColor(.white)
+                                        Image(systemName: "gear").foregroundColor(.white)
+                                    }
                                 }
+                                
                             }
                             Group{
                                 HStack{

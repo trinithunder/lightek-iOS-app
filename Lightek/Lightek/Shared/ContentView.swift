@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var selection = 0
-    @State var userNeedsToAuth = false //Need to get this value from User defaults
+    @State var userNeedsToAuth = !UserDefaults.standard.bool(forKey: "userNeedsToAuth") //Need to get this value from User defaults
     init() {
             // Change unselected and selected item colors
             let tabBarAppearance = UITabBar.appearance()
@@ -29,10 +29,13 @@ struct ContentView: View {
            
         UserProfileView().tabItem { Text("Profile") }.tag(5)
        }.fullScreenCover(isPresented: $userNeedsToAuth) {
-           userNeedsToAuth.toggle()
+           //userNeedsToAuth.toggle()
            //Need to set userNeedsToAuth value in User defaults
+           UserDefaults.standard.set(userNeedsToAuth, forKey: "userNeedsToAuth")
        } content: {
-           Text("Please sign the fuck in")
+           LoginView(userNeedsToAuth:$userNeedsToAuth)
+       }.onAppear {
+        
        }
 
     }

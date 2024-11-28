@@ -10,6 +10,7 @@ import SwiftUI
 struct LoginView: View {
     @State var email = ""
     @State var password = ""
+    @Binding var userNeedsToAuth:Bool
     var body: some View {
         NavigationView {
             ScrollView{
@@ -40,6 +41,8 @@ struct LoginView: View {
                 }
             }
             NavigationLink(destination: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Destination@*/Text("Destination")/*@END_MENU_TOKEN@*/) { /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Navigate")/*@END_MENU_TOKEN@*/ }
+        }.onAppear {
+            userNeedsToAuth.toggle()
         }
         
     }
@@ -51,6 +54,6 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginView(userNeedsToAuth:.constant(true))
     }
 }
