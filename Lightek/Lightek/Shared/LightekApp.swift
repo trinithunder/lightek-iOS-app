@@ -9,9 +9,18 @@ import SwiftUI
 
 @main
 struct LightekApp: App {
+    @UIApplicationDelegateAdaptor(GateKeeper.self) var gk
+    @Environment(\.scenePhase) private var scenePhase
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(gk)
+        }
+        .onChange(of: scenePhase) { newPhase in
+            gk.handleAppStateChange(newPhase)
         }
     }
+    
 }
+

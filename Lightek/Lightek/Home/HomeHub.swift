@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeHub: View {
     let gk = GateKeeper()
-    @State var items:[HomeContentItem] = [HomeContentItem(),HomeContentItem(),HomeContentItem(),HomeContentItem()]
+    @State var items: [AnyHashable] = []
     var body: some View {
         NavigationView{
             
@@ -23,7 +23,8 @@ struct HomeHub: View {
                                     HStack{
                                         Image(systemName: "magnifyingglass")
                                             .foregroundColor(.white)
-                                        PlaceholderTextField(placeholder: "Search for events")
+                                        Text("Search for events" + "\nFind an customer, event, or gen").foregroundColor(.white).font(.system(size: 10))
+//                                        PlaceholderTextField(placeholder: "Search for events")
                                         Image(systemName: "gear").foregroundColor(.white)
                                         Spacer().frame(width:160)
                                         Image(systemName: "gear").foregroundColor(.white)
@@ -32,6 +33,7 @@ struct HomeHub: View {
                                 }
                                 
                             }
+                            Spacer()
                             Group{
                                 HStack{
                                     Text("Welcome, Mukul 👋").font(.system(size: 15))

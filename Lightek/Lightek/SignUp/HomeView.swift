@@ -73,51 +73,6 @@ struct HomeCell: View {
             }
         }
         
-        
-        
-//        VStack{
-//            HStack{
-//                Image(systemName: "house")
-//                    .resizable()
-//                    .frame(width: 42, height: 42, alignment: .leading)
-//                    .padding(.leading,20)
-//                    .padding(.top,25)
-//                Text("User Name")
-//                    .foregroundColor(gk.vinylCTRLPurp)
-//                    .font(Font.system(size: 16))
-//                    .padding(.top,20)
-//                Spacer()
-//                Text("Budget")
-//                    .font(Font.system(size: 12))
-//                    .padding(.trailing,20)
-//                    .padding(.top,20)
-//            }
-//            HStack{
-//                Spacer().frame(width:50)
-//                Text("****")
-//                    .font(Font.system(size: 12))
-//                    .padding(.leading,20)
-//                Text("4.9")
-//                    .font(Font.system(size: 12))
-//                    .padding(.bottom,2)
-//                Spacer()
-//                Text("$80-$100")
-//                    .font(Font.system(size: 12))
-//                    .padding(.trailing,20)
-//            }
-//            Group{
-//                Text("1111111kjdhfksjhfkjh: kjhfksdjhfks")
-//                Text("1111111kjdhfksjhfkjh: kjhfksdjhfks")
-//                Text("1111111kjdhfksjhfkjh: kjhfksdjhfks")
-//                Text("1111111kjdhfksjhfkjh: kjhfksdjhfks")
-//                Text("1111111kjdhfksjhfkjh: kjhfksdjhfks")
-//                    .lineSpacing(4.0)
-//                Spacer()
-//            }
-//            .font(Font.system(size: 12))
-//        }.frame(width: 343, height: 170)
-//            .background(Color.gray)
-//            .padding(.bottom)
     }
                          }
 
@@ -201,11 +156,6 @@ struct DynamicHorizontalScrollView: View {
                     HStack(spacing: 15) {
                         ForEach(items, id: \.self) { item in
                             HomeCell(imageURL: "https://images3.alphacoders.com/678/678085.jpg")
-        //                    Text(item)
-        //                        .padding()
-        //                        .frame(width: 100, height: 100)
-        //                        .background(Color.green.opacity(0.3))
-        //                        .cornerRadius(8)
                         }
                     }
                     .padding()
