@@ -33,21 +33,37 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
         }
     
     //MARK: - functions
-    func loadThatJson<T: HashableCodable>(myCodeableObject:T,block:( @escaping ([AnyHashable]) ->())){
+    private func fetchData<T: HashableCodable>(url: URL, myObjectForCollection: T.Type) async -> [T] {
+        do {
+            var request = URLRequest(url: url)
+            request.allHTTPHeaderFields = ["Accept": "application/json"] // Example header
+            request.httpMethod = "GET"
+
+            // Perform the request and wait for the response
+            let (data, _) = try await URLSession.shared.data(for: request)
+
+            // Decode the data into an array of the specified type
+            let decodedObjects = try JSONDecoder().decode([T].self, from: data)
+            
+            return decodedObjects
+        } catch {
+            print("Error fetching or decoding data: \(error)")
+            return []
+        }
+    }
+    
+    func loadThatJson<T: HashableCodable>(myCodeableObject:T.Type,block:( @escaping ([T]) ->())){
         Task.detached { [self] in
             // Background work
-            print("Background thread: \(Thread.isMainThread)")
+            print("Background thread: \(!Thread.isMainThread)")
             
-            let tempDataSource = await fetchData(url: URL(string: "") ?? URL(string: "")!, myObjectForCollection: T.self)
+            let tempDataSource:[T] = await fetchData(url: URL(string: "") ?? URL(string: "http://localhost:3000/user_profile/2")!, myObjectForCollection: T.self)
             
             await MainActor.run {
                             // Switch to main thread
                             print("Switched to main thread: \(Thread.isMainThread)")
-                items = tempDataSource
-                block(items)
+                block(tempDataSource)
                         }
-
-            
         }
     }
     
@@ -107,25 +123,6 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
            // Example logic to check if the user is logged in
            isLoggedIn = true // or fetch status from persistence
        }
-    
-    private func fetchData<T: HashableCodable>(url: URL, myObjectForCollection: T.Type) async -> [AnyHashable] {
-        do {
-            var request = URLRequest(url: url)
-            request.allHTTPHeaderFields = ["Content-Type": "application/json"] // Example header
-            request.httpMethod = "GET"
-
-            // Perform the request and wait for the response
-            let (data, _) = try await URLSession.shared.data(for: request)
-
-            // Decode the data into an array of the specified type
-            let decodedObjects = try JSONDecoder().decode([T].self, from: data)
-            
-            return decodedObjects
-        } catch {
-            print("Error fetching or decoding data: \(error)")
-            return []
-        }
-    }
     
     private func postThatJson<T: HashableCodable, U: HashableCodable>(
         url: URL,
