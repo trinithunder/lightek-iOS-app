@@ -9,7 +9,14 @@ import SwiftUI
 
 struct OrdersView: View {
     var body: some View {
-        Text("This view will hold all the orders of a user")
+        ZStack{
+            gk.vinylCTRLDarkColor.ignoresSafeArea()
+            ScrollView{
+                VStack{
+                    Text("This view will hold all the orders of a user")
+                }
+            }
+        }
     }
 }
 

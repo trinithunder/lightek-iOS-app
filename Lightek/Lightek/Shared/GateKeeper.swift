@@ -13,11 +13,13 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
     let vinylCTRLYellow = Color("VinylCTRLYellow")
     let vinylCTRLPurp = Color("VinylCTRLPurp")
     let vinylCTRLBlk = Color("VinylCTRLBlk")
+    let vinylCTRLDarkColor = Color(hex: "131313")
     @Published var items:[AnyHashable] = []
     @Published var isLoggedIn: Bool
     @Published var group:Groups = .client
     @Published var hubs = Hubs()
     @Published var currentUser:Int = UserDefaults.standard.object(forKey: "currentUser") as? Int ?? 0
+    @Published var selectedPaymentMethod: PaymentMethod? = nil
 
         override init() {
             // Initialize isLoggedIn based on UserDefaults, defaulting to false

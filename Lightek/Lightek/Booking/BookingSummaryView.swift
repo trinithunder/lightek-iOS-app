@@ -20,7 +20,7 @@ struct BookingSummaryView: View {
     @State private var additionalRequest = ""
     var body: some View {
         ZStack{
-            Color.black.ignoresSafeArea()
+            gk.vinylCTRLDarkColor.ignoresSafeArea()
             ScrollView{
                 VStack{
                     //Spacer().frame(height:10)

@@ -29,7 +29,7 @@ struct UserProfileView: View {
     var body: some View {
         NavigationView {
             ZStack{
-                gk.vinylCTRLBlk.ignoresSafeArea()
+                gk.vinylCTRLDarkColor.ignoresSafeArea()
                 ScrollView {
                     VStack(spacing:20){
                         SearchBar()

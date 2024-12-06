@@ -18,6 +18,11 @@ enum Groups {
     case artist
 }
 
+enum PaymentMethod: String, CaseIterable {
+        case applePay = "Apple Pay"
+        case creditCard = "Credit Card"
+    }
+
 struct User:CodableHashable{
     var id:Int
     var email: String

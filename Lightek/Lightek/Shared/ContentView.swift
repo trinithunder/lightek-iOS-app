@@ -5,6 +5,8 @@
 //  Created by Marlon on 11/23/24.
 //
 
+//TODO: - Need to add TshangSung into this and have the logout action in the settings be able to trigger the home tab after setting user needs to auth.
+
 import SwiftUI
 
 struct ContentView: View {

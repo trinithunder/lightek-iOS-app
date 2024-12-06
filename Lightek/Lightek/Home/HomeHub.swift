@@ -14,7 +14,7 @@ struct HomeHub: View {
         NavigationView{
             
                 ZStack{
-                    Color.black.ignoresSafeArea()
+                    gk.vinylCTRLDarkColor.ignoresSafeArea()
                     ScrollView{
                         VStack{
 //                            Spacer().frame(height:100)

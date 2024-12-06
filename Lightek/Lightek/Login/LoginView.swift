@@ -15,10 +15,11 @@ struct LoginView: View {
     @State var isIncorrectPhoneNumber = false
     @State var showRegisterScreen = false
     @State var showAuthCodeScreen = false
+    @EnvironmentObject var gk:GateKeeper
     var body: some View {
         NavigationView {
             ZStack{
-                Color.black.ignoresSafeArea()
+                gk.vinylCTRLDarkColor.ignoresSafeArea()
                 ScrollView{
                 VStack(spacing:20) {
                     HStack{Text("Welcome back 👋").foregroundColor(.gray).padding(.leading,16)
