@@ -90,7 +90,7 @@ struct UserProfileView: View {
                 }
             }
         }.onAppear{
-            gk.loadThatJson(myCodeableObject: User.self,id: 2) { items in
+            gk.loadThatJson(myCodeableObject: User.self,id: gk.currentUser) { items in
                 contentItems = items
             }
         }
