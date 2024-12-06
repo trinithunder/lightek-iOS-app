@@ -23,7 +23,7 @@ struct ContentView: View {
             HomeHub().tabItem { Text("Home") }.tag(1)
             OrdersView().tabItem { Text("Orders") }.tag(2)
            Text("I guess this is a create view").tabItem {
-               Text("+")
+               Text("Add")
                }.tag(3)
            ChatView().tabItem { Text("Chats") }.tag(4)
            

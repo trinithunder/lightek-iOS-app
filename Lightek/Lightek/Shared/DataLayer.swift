@@ -8,6 +8,15 @@
 import Foundation
 import SwiftUI
 
+protocol CodableHashable: Codable, Hashable {}
+
+typealias HashableCodable = CodableHashable
+
+enum Groups {
+    case client
+    case artist
+}
+
 struct User:CodableHashable{
     var id:Int
     var email: String
@@ -30,4 +39,68 @@ struct UserProfile:CodableHashable{
     var user_id:Int
     var created_at:String
     var updated_at:String
+}
+
+struct Networking {
+    static let baseUrl = "http://localhost:3000"
+}
+
+struct Routes{
+    static let user_profile = "user_profile"
+    static let users = "users"
+}
+
+struct Hubs {
+    
+    func onboarding()-> some View{
+       return tshangShung()
+    }
+    
+    func signIn()-> some View{
+       return tshangShung()
+    }
+    
+    func signUp()-> some View{
+       return tshangShung()
+    }
+    
+    func home()-> some View{
+       return tshangShung()
+    }
+    
+    func profile()-> some View{
+       return tshangShung()
+    }
+    
+    func transactions()-> some View{
+       return tshangShung()
+    }
+    
+    func services()-> some View{
+       return tshangShung()
+    }
+    
+    func subscription()-> some View{
+       return tshangShung()
+    }
+    
+    func chat()-> some View{
+       return tshangShung()
+    }
+    
+    func artistBooking()-> some View{
+       return tshangShung()
+    }
+    
+    func bookingHistory()-> some View{
+       return tshangShung()
+    }
+    
+    func requirements()-> some View{
+       return tshangShung()
+    }
+    
+    private func tshangShung()->some View{
+        return EmptyView()
+    }
 }

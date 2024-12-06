@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeHub: View {
-    let gk = GateKeeper()
+    @EnvironmentObject var gk: GateKeeper
     @State var items: [AnyHashable] = []
     var body: some View {
         NavigationView{

@@ -18,6 +18,11 @@
 		37771EB22CF70733006E3E5A /* HomeHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EB12CF70732006E3E5A /* HomeHub.swift */; };
 		37771EB52CF8557D006E3E5A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EB42CF8557C006E3E5A /* SearchView.swift */; };
 		37771EB92CFE3BE8006E3E5A /* DataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EB82CFE3BE7006E3E5A /* DataLayer.swift */; };
+		37771EBB2D0170EA006E3E5A /* AuthCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EBA2D0170E9006E3E5A /* AuthCodeView.swift */; };
+		37771EBE2D018062006E3E5A /* BookingSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EBD2D018062006E3E5A /* BookingSummaryView.swift */; };
+		37771EC02D01954A006E3E5A /* BookingSummaryPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EBF2D01954A006E3E5A /* BookingSummaryPaymentMethod.swift */; };
+		37771EC22D01957A006E3E5A /* BookingSucess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EC12D01957A006E3E5A /* BookingSucess.swift */; };
+		37771EC42D0195AD006E3E5A /* BookingDetailsPaidTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EC32D0195AD006E3E5A /* BookingDetailsPaidTotal.swift */; };
 		37F349AE2CF222EF009C232A /* LightekApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349AD2CF222EF009C232A /* LightekApp.swift */; };
 		37F349B02CF222EF009C232A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349AF2CF222EF009C232A /* ContentView.swift */; };
 		37F349B22CF222F4009C232A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37F349B12CF222F4009C232A /* Assets.xcassets */; };
@@ -59,6 +64,11 @@
 		37771EB62CFB1F10006E3E5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		37771EB72CFB1F71006E3E5A /* Lightek.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lightek.entitlements; sourceTree = "<group>"; };
 		37771EB82CFE3BE7006E3E5A /* DataLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLayer.swift; sourceTree = "<group>"; };
+		37771EBA2D0170E9006E3E5A /* AuthCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCodeView.swift; sourceTree = "<group>"; };
+		37771EBD2D018062006E3E5A /* BookingSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingSummaryView.swift; sourceTree = "<group>"; };
+		37771EBF2D01954A006E3E5A /* BookingSummaryPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingSummaryPaymentMethod.swift; sourceTree = "<group>"; };
+		37771EC12D01957A006E3E5A /* BookingSucess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingSucess.swift; sourceTree = "<group>"; };
+		37771EC32D0195AD006E3E5A /* BookingDetailsPaidTotal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingDetailsPaidTotal.swift; sourceTree = "<group>"; };
 		37F349AA2CF222EF009C232A /* Lightek.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lightek.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37F349AD2CF222EF009C232A /* LightekApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightekApp.swift; sourceTree = "<group>"; };
 		37F349AF2CF222EF009C232A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -113,6 +123,17 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		37771EBC2D017FB5006E3E5A /* Booking */ = {
+			isa = PBXGroup;
+			children = (
+				37771EBD2D018062006E3E5A /* BookingSummaryView.swift */,
+				37771EBF2D01954A006E3E5A /* BookingSummaryPaymentMethod.swift */,
+				37771EC12D01957A006E3E5A /* BookingSucess.swift */,
+				37771EC32D0195AD006E3E5A /* BookingDetailsPaidTotal.swift */,
+			);
+			path = Booking;
+			sourceTree = "<group>";
+		};
 		37F349A12CF222EF009C232A = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +157,7 @@
 		37F349AC2CF222EF009C232A /* Lightek */ = {
 			isa = PBXGroup;
 			children = (
+				37771EBC2D017FB5006E3E5A /* Booking */,
 				37771EB72CFB1F71006E3E5A /* Lightek.entitlements */,
 				37771EB62CFB1F10006E3E5A /* Info.plist */,
 				37771EB32CF85550006E3E5A /* Search */,
@@ -186,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				37F349E42CF22596009C232A /* LoginView.swift */,
+				37771EBA2D0170E9006E3E5A /* AuthCodeView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -422,13 +445,18 @@
 				372C0B672CF61E74008BD678 /* GateKeeper.swift in Sources */,
 				372C0B582CF23048008BD678 /* SignUpView.swift in Sources */,
 				37F349E52CF22596009C232A /* LoginView.swift in Sources */,
+				37771EBE2D018062006E3E5A /* BookingSummaryView.swift in Sources */,
+				37771EBB2D0170EA006E3E5A /* AuthCodeView.swift in Sources */,
 				37771EB92CFE3BE8006E3E5A /* DataLayer.swift in Sources */,
 				37F349B02CF222EF009C232A /* ContentView.swift in Sources */,
 				372C0B652CF5BF9B008BD678 /* OrdersView.swift in Sources */,
 				372C0B602CF2356D008BD678 /* ChatView.swift in Sources */,
+				37771EC22D01957A006E3E5A /* BookingSucess.swift in Sources */,
 				37771EB52CF8557D006E3E5A /* SearchView.swift in Sources */,
 				37771EB22CF70733006E3E5A /* HomeHub.swift in Sources */,
+				37771EC02D01954A006E3E5A /* BookingSummaryPaymentMethod.swift in Sources */,
 				372C0B5C2CF233B2008BD678 /* SettingsView.swift in Sources */,
+				37771EC42D0195AD006E3E5A /* BookingDetailsPaidTotal.swift in Sources */,
 				372C0B5A2CF230C7008BD678 /* HomeView.swift in Sources */,
 				37F349AE2CF222EF009C232A /* LightekApp.swift in Sources */,
 			);

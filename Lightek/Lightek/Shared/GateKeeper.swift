@@ -9,16 +9,15 @@ import Foundation
 import SwiftUI
 import UIKit
 
-protocol CodableHashable: Codable, Hashable {}
-
-typealias HashableCodable = CodableHashable
-
 class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
     let vinylCTRLYellow = Color("VinylCTRLYellow")
     let vinylCTRLPurp = Color("VinylCTRLPurp")
     let vinylCTRLBlk = Color("VinylCTRLBlk")
     @Published var items:[AnyHashable] = []
     @Published var isLoggedIn: Bool
+    @Published var group:Groups = .client
+    @Published var hubs = Hubs()
+    @Published var currentUser:Int = UserDefaults.standard.object(forKey: "currentUser") as? Int ?? 0
 
         override init() {
             // Initialize isLoggedIn based on UserDefaults, defaulting to false
@@ -52,12 +51,33 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
         }
     }
     
-    func loadThatJson<T: HashableCodable>(myCodeableObject:T.Type,block:( @escaping ([T]) ->())){
+    func loadThatJson<T: HashableCodable>(myCodeableObject:T.Type,id:Int? = nil, block:( @escaping ([T]) ->())){
         Task.detached { [self] in
             // Background work
             print("Background thread: \(!Thread.isMainThread)")
             
-            let tempDataSource:[T] = await fetchData(url: URL(string: "") ?? URL(string: "http://localhost:3000/user_profile/2")!, myObjectForCollection: T.self)
+            // Determine URL based on the type of T
+                    let urlString: String
+                    switch T.self {
+                    case is User.Type:
+                        if let id = id {
+                                        urlString = "\(Networking.baseUrl)/\(Routes.user_profile)/\(id)"
+                                    } else {
+                                        urlString = "\(Networking.baseUrl)/\(Routes.users)"
+                                    }
+                    case is UserProfile.Type:
+                        urlString = "\(Networking.baseUrl)/\(Routes.user_profile)/2"
+                    default:
+                        urlString = "\(Networking.baseUrl)/default_route"
+                    }
+                    
+                    // Fetch data
+                    guard let url = URL(string: urlString) else {
+                        print("Invalid URL")
+                        return
+                    }
+            
+            let tempDataSource:[T] = await fetchData(url: url, myObjectForCollection: T.self)
             
             await MainActor.run {
                             // Switch to main thread

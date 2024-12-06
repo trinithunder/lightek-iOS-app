@@ -14,7 +14,7 @@ struct LightekApp: App {
 
     var body: some Scene {
         WindowGroup {
-            UserProfileView()
+            BookingSummaryView()
                 .environmentObject(gk)
         }
         .onChange(of: scenePhase) { newPhase in
