@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct OrdersView: View {
+    @EnvironmentObject var gk:GateKeeper
     var body: some View {
         ZStack{
             gk.vinylCTRLDarkColor.ignoresSafeArea()

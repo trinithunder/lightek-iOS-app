@@ -23,9 +23,9 @@
 		37771EC02D01954A006E3E5A /* BookingSummaryPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EBF2D01954A006E3E5A /* BookingSummaryPaymentMethod.swift */; };
 		37771EC22D01957A006E3E5A /* BookingSucess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EC12D01957A006E3E5A /* BookingSucess.swift */; };
 		37771EC42D0195AD006E3E5A /* BookingDetailsPaidTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EC32D0195AD006E3E5A /* BookingDetailsPaidTotal.swift */; };
+		37771EC52D043105006E3E5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37F349B12CF222F4009C232A /* Assets.xcassets */; };
 		37F349AE2CF222EF009C232A /* LightekApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349AD2CF222EF009C232A /* LightekApp.swift */; };
 		37F349B02CF222EF009C232A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349AF2CF222EF009C232A /* ContentView.swift */; };
-		37F349B22CF222F4009C232A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37F349B12CF222F4009C232A /* Assets.xcassets */; };
 		37F349B52CF222F4009C232A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37F349B42CF222F4009C232A /* Preview Assets.xcassets */; };
 		37F349BF2CF222F5009C232A /* LightekTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349BE2CF222F5009C232A /* LightekTests.swift */; };
 		37F349C92CF222F5009C232A /* LightekUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F349C82CF222F5009C232A /* LightekUITests.swift */; };
@@ -414,8 +414,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37771EC52D043105006E3E5A /* Assets.xcassets in Resources */,
 				37F349B52CF222F4009C232A /* Preview Assets.xcassets in Resources */,
-				37F349B22CF222F4009C232A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

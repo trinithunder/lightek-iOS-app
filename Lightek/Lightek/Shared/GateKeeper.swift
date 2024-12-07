@@ -14,6 +14,8 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
     let vinylCTRLPurp = Color("VinylCTRLPurp")
     let vinylCTRLBlk = Color("VinylCTRLBlk")
     let vinylCTRLDarkColor = Color(hex: "131313")
+    let vinlCTRLHintColor = Color(hex: "94a3b8")
+    let vinlCTRLDarkColorStroke = Color(hex: "525b68")
     @Published var items:[AnyHashable] = []
     @Published var isLoggedIn: Bool
     @Published var group:Groups = .client

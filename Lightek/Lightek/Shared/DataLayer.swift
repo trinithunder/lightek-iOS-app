@@ -111,6 +111,42 @@ struct Hubs {
     }
 }
 
+struct AsyncImageView: View {
+    let imageURL: URL
+    @State var imageWidth = 100.0
+    @State var imageHeight = 100.0
+    
+    var body: some View {
+        AsyncImage(url: imageURL) { phase in
+            switch phase {
+            case .empty:
+                // Placeholder view while the image is loading
+                ProgressView()
+                    .frame(width: 100, height: 100)
+                    .background(Color.gray.opacity(0.2))
+                    .cornerRadius(10)
+            case .success(let image):
+                // Successfully loaded image
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: imageWidth, height: imageHeight)
+                    .cornerRadius(10)
+            case .failure:
+                // Placeholder for failed image load
+                Image(systemName: "photo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
+                    .background(Color.gray.opacity(0.2))
+                    .cornerRadius(10)
+            @unknown default:
+                EmptyView()
+            }
+        }
+    }
+}
+
 extension Color {
     init?(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)

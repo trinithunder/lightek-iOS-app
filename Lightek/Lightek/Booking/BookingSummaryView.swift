@@ -18,6 +18,7 @@ struct BookingSummaryView: View {
     @State private var phoneNumber = ""
     @State private var location = ""
     @State private var additionalRequest = ""
+    @EnvironmentObject var gk:GateKeeper
     var body: some View {
         ZStack{
             gk.vinylCTRLDarkColor.ignoresSafeArea()
