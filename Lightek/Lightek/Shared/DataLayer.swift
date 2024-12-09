@@ -32,19 +32,29 @@ struct User:CodableHashable{
     var user_profile: UserProfile
 }
 
+struct ProfileSettingItem:CodableHashable{
+    var title:String
+    var iconImage:String
+}
+
 struct UserProfile:CodableHashable{
     var id:Int
-    var first_name:String
-    var last_name:String
-    var bio:String
-    var twitter:String
-    var instagram:String
-    var blue_sky:String
-    var tiktok:String
-    var phone_number:String
+    var first_name:String?
+    var last_name:String?
+    var bio:String?
+    var twitter:String?
+    var instagram:String?
+    var blue_sky:String?
+    var tiktok:String?
+    var phone_number:String?
     var user_id:Int
     var created_at:String
     var updated_at:String
+    var youtube:String?
+    var soundcloud:String?
+    var  willing_to_travel:Bool?
+    var experience:String?
+    var location:String?
 }
 
 struct Networking {

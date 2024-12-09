@@ -20,7 +20,7 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
     @Published var isLoggedIn: Bool
     @Published var group:Groups = .client
     @Published var hubs = Hubs()
-    @Published var currentUser:Int = UserDefaults.standard.object(forKey: "currentUser") as? Int ?? 0
+    @Published var currentUser:Int = UserDefaults.standard.object(forKey: "currentUser") as? Int ?? 2
     @Published var selectedPaymentMethod: PaymentMethod? = nil
 
         override init() {
@@ -46,7 +46,7 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
             let (data, _) = try await URLSession.shared.data(for: request)
 
             // Decode the data into an array of the specified type
-            let decodedObjects = try JSONDecoder().decode([T].self, from: data)
+            guard let decodedObjects = try? JSONDecoder().decode([T].self, from: data)else{return []}
             
             return decodedObjects
         } catch {

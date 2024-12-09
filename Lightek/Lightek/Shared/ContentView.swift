@@ -23,7 +23,7 @@ struct ContentView: View {
     var body: some View {
        TabView(selection: $selection) {
             HomeHub().tabItem { Text("Home") }.tag(1)
-            OrdersView().tabItem { Text("Orders") }.tag(2)
+           BookingsView().tabItem { Text("Orders") }.tag(2)
            Text("I guess this is a create view").tabItem {
                Text("Add")
                }.tag(3)

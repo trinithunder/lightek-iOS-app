@@ -26,13 +26,23 @@ struct UserProfileView: View {
     @State var contentItems:[User] = []
     @EnvironmentObject var gk:GateKeeper
     @State var selectedSegment = 0
+    @State var showSearch = false
+    @State var menuItems:[ProfileSettingItem] = [ProfileSettingItem(title: "Edit Profile", iconImage: "chevron.right"),ProfileSettingItem(title: "Check availability", iconImage: "chevron.right"),ProfileSettingItem(title: "Transactions detail", iconImage: "chevron.right"),ProfileSettingItem(title: "Settings", iconImage: "chevron.right"),ProfileSettingItem(title: "Logout", iconImage: "chevron.right"),ProfileSettingItem(title: "Delete account", iconImage: "chevron.right")]
     var body: some View {
         NavigationView {
             ZStack{
-                gk.vinylCTRLDarkColor.ignoresSafeArea()
+                gk.vinylCTRLBlk.ignoresSafeArea()
                 ScrollView {
                     VStack(spacing:20){
-                        SearchBar()
+                        Button{
+                            showSearch.toggle()
+                        }label:{
+                            SearchBar().fullScreenCover(isPresented: $showSearch) {
+                                
+                            } content: {
+                                SearchView()
+                            }
+                        }
                         
                         HStack{
                             Text("Profile").font(.largeTitle).foregroundColor(.white).padding(.leading,16)
@@ -57,20 +67,60 @@ struct UserProfileView: View {
                         
                         // Conditionally display different views based on the selected segment
                         if selectedSegment == 0 {
-                            HStack{
-                                Circle().frame(width: 118, height: 121).foregroundColor(.yellow).overlay(Text("D").font(.system(size:104)))
-                                VStack(spacing:9){
-                                    Text("John Doe").foregroundColor(.white).font(.system(size:20))
-                                    Text("Years of experience goes here").foregroundColor(.white).font(.system(size:12))
-                                    Text("Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.").foregroundColor(.white).font(.system(size: 13))
-                                }.frame(width:224)
+                            
+                            ForEach(contentItems,id:\.self){ item in
+                                Group{
+                                    HStack{
+                                    Circle().frame(width: 118, height: 121).foregroundColor(.yellow).overlay(Text("D").font(.system(size:104)))
+                                    VStack(spacing:9){
+                                        Text("\(item.user_profile.first_name ?? "") " + "\(item.user_profile.last_name ?? "")").foregroundColor(.white).font(.system(size:20))
+                                            .padding(.bottom,9)
+                                        Text("\(item.user_profile.experience ?? "")" ).foregroundColor(.white).font(.system(size:12))
+                                            .background(RoundedRectangle(cornerRadius: 25).frame(width:163,height:26).foregroundColor(.purple).padding(.top,10).padding(.trailing,10).padding(.bottom,10).padding(.leading,10)).padding(.bottom,9)
+                                            .opacity(item.user_profile.experience == nil ? 0:1)
+                                        Text("\(item.user_profile.bio ?? "")").foregroundColor(.white).font(.system(size: 13))
+                                    }.frame(width:224).opacity(item.user_profile.bio == nil ? 0:1)
+                                }}
+                                Group{
+                                    HStack{
+                                    Image(systemName: "house").foregroundColor(.white).padding(.leading,16)
+                                    Text("\(item.user_profile.location ?? "")").foregroundColor(.white).font(.system(size:12))
+                                    Spacer()
+                                    }.opacity(item.user_profile.location == nil ? 0:1)
+                                Rectangle().frame(width:UIScreen.main.bounds.width,height:4).foregroundColor(.gray)
+                                Spacer().frame(height:20)}
+                                
+                                Group{
+                                    ForEach(menuItems,id:\.self){menuItem in
+                                        Group{
+                                            Button {
+                                            //
+                                        } label: {
+                                            VStack{
+                                                HStack{
+                                                    Text(menuItem.title.uppercased())
+                                                        .foregroundColor(.white)
+                                                        .padding(.leading,16)
+                                                    Spacer()
+                                                    Image(systemName:menuItem.iconImage).foregroundColor(.yellow)
+                                                        .background(Circle().frame(width:24,height:24).padding().foregroundColor(gk.vinylCTRLDarkColor)).padding(.trailing,16)
+                                                    
+                                                    
+                                                }
+                                                Spacer().frame(height:14)
+                                                Rectangle().frame(width:UIScreen.main.bounds.width,height:1).foregroundColor(.gray)
+                                            }
+                                        }}
+                                        
+                                    }
+                                }
+                                
+                                Group{Spacer()
+                                    
+                                }
+
                             }
-                            HStack{
-                                Image(systemName: "house").foregroundColor(.white).padding(.leading,16)
-                                Text("123, XYZ street, Jakarta, Indonesia").foregroundColor(.white).font(.system(size:12))
-                                Spacer()
-                            }
-                            Rectangle().frame(width:UIScreen.main.bounds.width,height:4).foregroundColor(.gray)
+                            
 //                            ForEach(contentItems,id:\.self){ item in
 //                                NavigationLink(destination: Text("This is will be the detail view it goes to")) { Text(item.user_profile.first_name).foregroundColor(.blue) }
 //                            }
