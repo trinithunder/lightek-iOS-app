@@ -37,6 +37,30 @@ struct ProfileSettingItem:CodableHashable{
     var iconImage:String
 }
 
+struct Requirement:CodableHashable{
+var event_name:String
+var event_type:String
+var event_date_time:String
+var duration:String
+var location:String
+var genre:String
+var special_song:String
+var additional_services:String
+    
+}
+
+struct Service:CodableHashable{
+var service_name:String
+var service_type:String
+var service_description:String
+var phone_number:String
+var email:String
+var budget:String
+var availibility:String
+var additional_services:String
+    
+}
+
 struct UserProfile:CodableHashable{
     var id:Int
     var first_name:String?
