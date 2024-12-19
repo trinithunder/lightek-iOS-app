@@ -20,8 +20,12 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
     @Published var isLoggedIn: Bool
     @Published var group:Groups = .client
     @Published var hubs = Hubs()
-    @Published var currentUser:Int = UserDefaults.standard.object(forKey: "currentUser") as? Int ?? 2
+    @Published var currentUser:Int = 2 //UserDefaults.standard.object(forKey: "currentUser") as? Int ?? 2
     @Published var selectedPaymentMethod: PaymentMethod? = nil
+    @Published var timerStatus = true
+    @Published var timeRemaining = 60
+    let defaultTimer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
+    let showSplashScreenTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
 
         override init() {
             // Initialize isLoggedIn based on UserDefaults, defaulting to false
@@ -189,6 +193,20 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
         @unknown default:
             print("Unexpected new phase")
         }
+    }
+    
+    func timerIsActive()-> Bool{
+        return timerStatus
+    }
+    
+    func invalidateTimer(showTimer:Bool)-> Bool{
+        var timerShowStatus = showTimer
+        timerShowStatus.toggle()
+        print(":::..Changed the show status for screen..:::")
+    showSplashScreenTimer.upstream.connect().cancel()
+        print(":::..Canceled timer..:::")
+        return timerShowStatus
+        
     }
 
     

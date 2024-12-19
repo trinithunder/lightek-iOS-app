@@ -31,7 +31,7 @@ struct UserProfileView: View {
     var body: some View {
         NavigationView {
             ZStack{
-                gk.vinylCTRLBlk.ignoresSafeArea()
+                gk.vinylCTRLDarkColor.ignoresSafeArea()
                 ScrollView {
                     VStack(spacing:20){
                         Button{
@@ -137,7 +137,7 @@ struct UserProfileView: View {
                         
                         //make a grid of produced items here:
                     }
-                }
+                }.foregroundColor(gk.vinylCTRLPurp)
             }
         }.onAppear{
             gk.loadThatJson(myCodeableObject: User.self,id: gk.currentUser) { items in

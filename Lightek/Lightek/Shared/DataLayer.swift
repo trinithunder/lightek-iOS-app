@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 import UIKit
+import SceneKit
+import AVKit
 
 protocol CodableHashable: Codable, Hashable {}
 
@@ -196,4 +198,317 @@ extension Color {
         self.init(.sRGB, red: red, green: green, blue: blue, opacity: 1.0)
     }
 }
+
+//MARK: Nevaeh's stream of concience
+enum StreamingMode {
+    case standard
+    case vr
+}
+
+enum ControllerButton {
+case playPause
+    case forward
+    case backward
+}
+
+enum GestureType {
+case pinch
+    case swipeLeft
+    case swipeRight
+}
+
+// Enum to represent interactions
+enum VRInteractionType {
+    case none
+    case handTracking
+    case controller
+}
+
+//Activity type
+enum ActivityType:CodableHashable{
+    case episode
+    case video
+    case series
+    
+}
+struct ContentRating:CodableHashable {
+    var TVPG:String //"TV-14",
+    var Microsoft:String // "12",
+    var ESRB:String //"ESRB:T",
+    var PEGI:String // "PEGI:12"
+}
+struct PublishDate:CodableHashable {
+    var dateString:String // "2014-11-04T00:00:00-0500",
+    var timestamp:String // 1415077200
+}
+struct SeriesImage:CodableHashable{
+    var height:String // 1136,
+    var resizable:Bool // true,
+    var url:String // "http:\/\/4.images.spike.com\/tve\/lsb_iphone_series-pinned_031215.jpg",
+    var width:String // 640,
+    var aspectRatio:String // "9:16",
+    var type:String // "SeriesBannerPhone"
+    }
+
+
+struct HeadlineConfig:CodableHashable {
+        var headline:String // "LIP SYNC",
+        var headline2:String // "BATTLE",
+        var tuneIn:String // "SPIKE SERIES",
+        var tuneIn2:String // "Thursdays At 10\/9C"
+}
+
+
+struct Series:CodableHashable {
+    var id:Int //"mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a"
+    var entityType:ActivityType // "series"
+    var title:String // "Lip Sync Battle"
+    var subTitle:String // "Lip Sync Battle"
+    var description:String // "Lip Sync Battle is already a huge viral sensation. Now Spike is taking it to the next level with its very own show, hosted by LL Cool J and with colorful commentary by social media maven and supermodel co-host, Chrissy Teigen. Each episode will feature two A-list celebrities like you've never seen them before - synching their hearts out in hysterically epic performances. The mic is off, the battle is on!"
+    var content_rating:ContentRating
+    var publishDate:PublishDate
+    var url:String // "http:\/\/api.spike.com\/feeds\/networkapp\/android\/series\/1.0\/mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a?key=spikenetworkapp1.0",
+    var urlTimestamp:String // 1436889723,
+    var images: [SeriesImage]
+    var headlineConfig:HeadlineConfig
+    var seasons:[Season]
+}
+
+struct Season:CodableHashable {
+    var episodes:[Episode]
+}
+
+struct Episode:CodableHashable {
+//    "parentEntity": {
+//        "entityType": "series",
+//        "id": "mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a",
+//        "title": "Lip Sync Battle"
+//    },
+//    "id": "mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157",
+    var title:String // "Salt vs. Pepa",
+    var subTitle:String // "Season 1, Ep 9",
+    var description:String // "Bandmates, friends and now...competitors! Hip hop legends Salt-N-Pepa go to battle for lip sync glory.",
+//    "duration": {
+//        "milliseconds": 1232000,
+//        "timecode": "1232"
+//    },
+//    "entityType": "episode",
+//    "publishDate": {
+//        "dateString": "2015-05-22T07:00:00-04:00",
+//        "timestamp": 1432292400
+//    },
+    var url:String // "http:\/\/api.spike.com\/feeds\/networkapp\/android\/episode\/1.0\/mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157?key=spikenetworkapp1.0",
+//    "urlTimestamp": 1435680345,
+    var authRequired:Bool // false,
+    var images: [SeriesImage]
+//    "contentRating": {
+//        "TV-PG": null,
+//        "Microsoft": null,
+//        "ESRB": null,
+//        "PEGI": null
+//    },
+//    "distPolicy": {
+//        "authTve": false,
+//        "available": true,
+//        "startDate": 1435636800,
+//        "endDate": 1436587200,
+//        "canonicalURL": "http:\/\/www.spike.com\/full-episodes\/w2h6j1\/lip-sync-battle-salt-vs-pepa-season-1-ep-109"
+//    },
+//    "hasExtras": true,
+//    "extrasURL": "http:\/\/api.spike.com\/feeds\/networkapp\/android\/episode\/items\/1.0\/mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157?types=extra&key=spikenetworkapp1.0",
+//    "extrasURLTimestamp": 1435669678
+}
+
+
+
+struct VideoStreamingView: View {
+    @State private var streamingMode: StreamingMode = .standard
+    @State private var videoURL: URL?
+
+    var body: some View {
+        VStack {
+            if streamingMode == .standard {
+                StandardVideoPlayer(url: videoURL)
+            } else {
+                VRVideoPlayer(url: videoURL)
+            }
+
+            Picker("Mode", selection: $streamingMode) {
+                Text("Standard").tag(StreamingMode.standard)
+                Text("VR").tag(StreamingMode.vr)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+        }
+    }
+}
+
+struct StandardVideoPlayer: View {
+    let url: URL?
+
+    var body: some View {
+        if let url = url {
+            VideoPlayer(player: AVPlayer(url: url))
+                .onAppear {
+                    // Preload or buffer content for better performance
+                    preloadVideo(url: url)
+                }
+        } else {
+            Text("No video selected")
+        }
+    }
+
+    func preloadVideo(url: URL) {
+        let player = AVPlayer(url: url)
+        player.automaticallyWaitsToMinimizeStalling = true
+    }
+}
+
+
+struct VRVideoPlayer: View {
+    let url: URL?
+    @State private var player: AVPlayer?
+
+    var body: some View {
+        if let url = url,isVRCompatible(videoURL: url) {
+            SceneView(scene: createVRScene(url: url), options: [.allowsCameraControl])
+        } else {
+            Text("Invalid or non-VR video format")
+        }
+    }
+
+    func createVRScene(url: URL) -> SCNScene {
+            let scene = SCNScene()
+            
+            // Create a spherical geometry for VR projection
+            let sphereNode = SCNNode(geometry: SCNSphere(radius: 10))
+            sphereNode.geometry?.firstMaterial?.isDoubleSided = true
+
+            // Assign the video player as the texture for the sphere
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.videoGravity = .resizeAspectFill
+            sphereNode.geometry?.firstMaterial?.diffuse.contents = playerLayer
+
+            scene.rootNode.addChildNode(sphereNode)
+            return scene
+        }
+    
+    func isVRCompatible(videoURL: URL) -> Bool {
+        // Basic check for equirectangular video (you can expand with metadata parsing)
+        return videoURL.pathExtension == "mp4" || videoURL.pathExtension == "mov"
+    }
+    
+    func setupPlayer(for url: URL) {
+            player = AVPlayer(url: url)
+            player?.automaticallyWaitsToMinimizeStalling = true
+        player?.currentItem?.preferredForwardBufferDuration = 5.0 // Seconds
+            player?.play()
+        }
+}
+
+//MARK: - Basic Gaze Control with RealityKit:
+struct VRInteractionView: View {
+    let url: URL?
+    @State private var interactionType: VRInteractionType = .controller
+    @State private var isPlaying: Bool = true
+
+    var body: some View {
+        ZStack {
+            if let url = url {
+                SceneView(scene: createVRScene(url: url))
+            } else {
+                Text("No VR video selected")
+            }
+
+            if interactionType == .handTracking {
+                Text("Hand Tracking Enabled").foregroundColor(.white)
+            } else if interactionType == .controller {
+                Text("Controller Mode").foregroundColor(.white)
+            }
+        }
+        .onAppear {
+            initializeSDK()
+        }
+        .onTapGesture {
+            handleTap()
+        }
+    }
+
+    func initializeSDK() {
+        // Initialize Meta SDK or custom hand/controller SDK
+        print("Initializing VR SDK for interaction")
+        // Example: Meta SDK setup or custom input manager
+    }
+
+    func handleTap() {
+        // Simulate play/pause toggle with interaction
+        isPlaying.toggle()
+        print("Toggled playback state")
+    }
+
+    func createVRScene(url: URL) -> SCNScene {
+        let scene = SCNScene()
+        let sphereNode = SCNNode(geometry: SCNSphere(radius: 10))
+        sphereNode.geometry?.firstMaterial?.isDoubleSided = true
+        sphereNode.geometry?.firstMaterial?.diffuse.contents = url
+        scene.rootNode.addChildNode(sphereNode)
+        return scene
+    }
+    
+    //
+    //Hand Gesture or Controller Input
+    //Integrate input systems based on the SDK.
+    //
+    //Example: Hand Gesture Tracking
+    //Use Meta SDK or OpenXR for skeletal tracking data.
+    //Map gestures like pinch (e.g., thumb touching index finger) to actions.
+    func handleHandGesture(gesture: GestureType) {
+        switch gesture {
+        case .pinch:
+            togglePlayPause()
+        case .swipeLeft:
+            seekBackward()
+        case .swipeRight:
+            seekForward()
+//        default:
+//            break
+        }
+    }
+
+    func togglePlayPause() {
+        isPlaying.toggle()
+        print(isPlaying ? "Playing" : "Paused")
+    }
+    
+    func seekForward() {
+        isPlaying.toggle()
+        print(isPlaying ? "Playing" : "Paused")
+    }
+    
+    func seekBackward() {
+        isPlaying.toggle()
+        print(isPlaying ? "Playing" : "Paused")
+    }
+
+    //MARK: Example: Controller Input
+    //Bind buttons to actions, such as play/pause or seeking through video.
+    
+    func handleControllerInput(button: ControllerButton) {
+        switch button {
+        case .playPause:
+            togglePlayPause()
+        case .forward:
+            seekForward()
+        case .backward:
+            seekBackward()
+        
+        }
+    }
+}
+
+
+
+
+
+
 

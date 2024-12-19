@@ -12,6 +12,11 @@ import SwiftUI
 struct ContentView: View {
     @State var selection = 0
     @State var userNeedsToAuth = !UserDefaults.standard.bool(forKey: "userNeedsToAuth") //Need to get this value from User defaults
+    
+    @State var showLoadingScreen = true
+    @EnvironmentObject var gk:GateKeeper
+    @State var showContentView = false
+    
     init() {
             // Change unselected and selected item colors
             let tabBarAppearance = UITabBar.appearance()
@@ -21,7 +26,10 @@ struct ContentView: View {
         }
     
     var body: some View {
-       TabView(selection: $selection) {
+        
+       ZStack{
+           gk.vinylCTRLBlk.ignoresSafeArea()
+           TabView(selection: $selection) {
             HomeHub().tabItem { Text("Home") }.tag(1)
            BookingsView().tabItem { Text("Orders") }.tag(2)
            Text("I guess this is a create view").tabItem {
@@ -30,15 +38,33 @@ struct ContentView: View {
            ChatView().tabItem { Text("Chats") }.tag(4)
            
         UserProfileView().tabItem { Text("Profile") }.tag(5)
-       }.fullScreenCover(isPresented: $userNeedsToAuth) {
+       }
+       .opacity(showContentView ? 1:0)
+       .fullScreenCover(isPresented: .constant(false)) {
            //userNeedsToAuth.toggle()
            //Need to set userNeedsToAuth value in User defaults
            UserDefaults.standard.set(userNeedsToAuth, forKey: "userNeedsToAuth")
        } content: {
            LoginView(userNeedsToAuth:$userNeedsToAuth)
-       }.onAppear {
-        
        }
+       .fullScreenCover(isPresented: $showLoadingScreen) {
+           //Figure what I want to do here on dissmiss if anything
+       } content: {
+           DCLaunchScreen()
+               .onAppear{
+               
+           }
+               .onReceive(gk.showSplashScreenTimer) { _ in
+               //showLodingScreen.toggle()
+              // gk.invalidateTimer(showTimer: true)
+               showContentView.toggle()
+               print("Show content view \(showContentView)")
+               showLoadingScreen = gk.invalidateTimer(showTimer: showContentView)
+           }
+               .onDisappear{
+                   print("I'm up out of here fam! Because showContentView is \(!showLoadingScreen)")
+               }
+       }}
 
     }
 }

@@ -16,6 +16,7 @@
 		372C0B652CF5BF9B008BD678 /* BookingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B642CF5BF99008BD678 /* BookingsView.swift */; };
 		372C0B672CF61E74008BD678 /* GateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372C0B662CF61E73008BD678 /* GateKeeper.swift */; };
 		37730FA52D0B710400CE9C3A /* DCLaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37730FA42D0B710400CE9C3A /* DCLaunchScreen.swift */; };
+		37730FA82D130B9400CE9C3A /* NGTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37730FA72D130B9400CE9C3A /* NGTV.swift */; };
 		37771EB22CF70733006E3E5A /* HomeHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EB12CF70732006E3E5A /* HomeHub.swift */; };
 		37771EB52CF8557D006E3E5A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EB42CF8557C006E3E5A /* SearchView.swift */; };
 		37771EB92CFE3BE8006E3E5A /* DataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37771EB82CFE3BE7006E3E5A /* DataLayer.swift */; };
@@ -61,6 +62,7 @@
 		372C0B642CF5BF99008BD678 /* BookingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingsView.swift; sourceTree = "<group>"; };
 		372C0B662CF61E73008BD678 /* GateKeeper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GateKeeper.swift; sourceTree = "<group>"; };
 		37730FA42D0B710400CE9C3A /* DCLaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCLaunchScreen.swift; sourceTree = "<group>"; };
+		37730FA72D130B9400CE9C3A /* NGTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NGTV.swift; sourceTree = "<group>"; };
 		37771EB12CF70732006E3E5A /* HomeHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHub.swift; sourceTree = "<group>"; };
 		37771EB42CF8557C006E3E5A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		37771EB62CFB1F10006E3E5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 		37F349D92CF223DF009C232A /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				37730FA72D130B9400CE9C3A /* NGTV.swift */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -467,6 +470,7 @@
 				37771EB52CF8557D006E3E5A /* SearchView.swift in Sources */,
 				37771EB22CF70733006E3E5A /* HomeHub.swift in Sources */,
 				37771EC02D01954A006E3E5A /* BookingSummaryPaymentMethod.swift in Sources */,
+				37730FA82D130B9400CE9C3A /* NGTV.swift in Sources */,
 				372C0B5C2CF233B2008BD678 /* SettingsView.swift in Sources */,
 				37771EC42D0195AD006E3E5A /* BookingDetailsPaidTotal.swift in Sources */,
 				372C0B5A2CF230C7008BD678 /* HomeView.swift in Sources */,
