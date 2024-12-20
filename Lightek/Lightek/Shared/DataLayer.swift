@@ -21,9 +21,9 @@ enum Groups {
 }
 
 enum PaymentMethod: String, CaseIterable {
-        case applePay = "Apple Pay"
-        case creditCard = "Credit Card"
-    }
+    case applePay = "Apple Pay"
+    case creditCard = "Credit Card"
+}
 
 struct User:CodableHashable{
     var id:Int
@@ -40,26 +40,26 @@ struct ProfileSettingItem:CodableHashable{
 }
 
 struct Requirement:CodableHashable{
-var event_name:String
-var event_type:String
-var event_date_time:String
-var duration:String
-var location:String
-var genre:String
-var special_song:String
-var additional_services:String
+    var event_name:String
+    var event_type:String
+    var event_date_time:String
+    var duration:String
+    var location:String
+    var genre:String
+    var special_song:String
+    var additional_services:String
     
 }
 
 struct Service:CodableHashable{
-var service_name:String
-var service_type:String
-var service_description:String
-var phone_number:String
-var email:String
-var budget:String
-var availibility:String
-var additional_services:String
+    var service_name:String
+    var service_type:String
+    var service_description:String
+    var phone_number:String
+    var email:String
+    var budget:String
+    var availibility:String
+    var additional_services:String
     
 }
 
@@ -95,51 +95,51 @@ struct Routes{
 struct Hubs {
     
     func onboarding()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     func signIn()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     func signUp()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     func home()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     func profile()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     func transactions()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     func services()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     func subscription()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     func chat()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     func artistBooking()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     func bookingHistory()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     func requirements()-> some View{
-       return tshangShung()
+        return tshangShung()
     }
     
     private func tshangShung()->some View{
@@ -199,26 +199,56 @@ extension Color {
     }
 }
 
+//MARK: Nevaeh's video manager
+struct VideoManager {
+    var streamingMode:StreamingMode?
+    var controllerButton:ControllerButton?
+    var gestureType:GestureType?
+    var vr_interactionType:VRInteractionType?
+    var activityType:ActivityType?
+    var episode:Episode?
+    var series:Series?
+    var season:Season?
+    var faves:[Favorites]?
+    var contentRating:ContentRating?
+    var seriesImage:SeriesImage?
+    var headlineConfig:HeadlineConfig?
+    var binge:[Episode]?
+    var video_stream_view:VideoStreamingView = VideoStreamingView()
+    
+    func videoPlayer(url:String)-> some View{
+        video_stream_view.videoURL = URL(string: url)
+        return StandardVideoPlayer(url: URL(string: url))
+    }
+}
+
+struct Favorites:CodableHashable{
+    var author:Int
+    var activityType:ActivityType
+    var item:Int
+    
+}
+
 //MARK: Nevaeh's stream of concience
-enum StreamingMode {
+enum StreamingMode:CodableHashable {
     case standard
     case vr
 }
 
-enum ControllerButton {
-case playPause
+enum ControllerButton:CodableHashable {
+    case playPause
     case forward
     case backward
 }
 
-enum GestureType {
-case pinch
+enum GestureType:CodableHashable {
+    case pinch
     case swipeLeft
     case swipeRight
 }
 
 // Enum to represent interactions
-enum VRInteractionType {
+enum VRInteractionType:CodableHashable {
     case none
     case handTracking
     case controller
@@ -248,15 +278,21 @@ struct SeriesImage:CodableHashable{
     var width:String // 640,
     var aspectRatio:String // "9:16",
     var type:String // "SeriesBannerPhone"
-    }
+}
 
 
 struct HeadlineConfig:CodableHashable {
-        var headline:String // "LIP SYNC",
-        var headline2:String // "BATTLE",
-        var tuneIn:String // "SPIKE SERIES",
-        var tuneIn2:String // "Thursdays At 10\/9C"
+    var headline:String // "LIP SYNC",
+    var headline2:String // "BATTLE",
+    var tuneIn:String // "SPIKE SERIES",
+    var tuneIn2:String // "Thursdays At 10\/9C"
 }
+
+    struct ParentEntity:CodableHashable {
+        var entityType:String // "series",
+        var id:String // "mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a",
+        var title:String // "Lip Sync Battle"
+    }
 
 
 struct Series:CodableHashable {
@@ -279,52 +315,43 @@ struct Season:CodableHashable {
 }
 
 struct Episode:CodableHashable {
-//    "parentEntity": {
-//        "entityType": "series",
-//        "id": "mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a",
-//        "title": "Lip Sync Battle"
-//    },
-//    "id": "mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157",
+    var parentEntity:ParentEntity
+    //    "id": "mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157",
     var title:String // "Salt vs. Pepa",
     var subTitle:String // "Season 1, Ep 9",
     var description:String // "Bandmates, friends and now...competitors! Hip hop legends Salt-N-Pepa go to battle for lip sync glory.",
-//    "duration": {
-//        "milliseconds": 1232000,
-//        "timecode": "1232"
-//    },
-//    "entityType": "episode",
-//    "publishDate": {
-//        "dateString": "2015-05-22T07:00:00-04:00",
-//        "timestamp": 1432292400
-//    },
+    //    "duration": {
+    //        "milliseconds": 1232000,
+    //        "timecode": "1232"
+    //    },
+    //    "entityType": "episode",
+    //    "publishDate": {
+    //        "dateString": "2015-05-22T07:00:00-04:00",
+    //        "timestamp": 1432292400
+    //    },
     var url:String // "http:\/\/api.spike.com\/feeds\/networkapp\/android\/episode\/1.0\/mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157?key=spikenetworkapp1.0",
-//    "urlTimestamp": 1435680345,
+    //    "urlTimestamp": 1435680345,
     var authRequired:Bool // false,
     var images: [SeriesImage]
-//    "contentRating": {
-//        "TV-PG": null,
-//        "Microsoft": null,
-//        "ESRB": null,
-//        "PEGI": null
-//    },
-//    "distPolicy": {
-//        "authTve": false,
-//        "available": true,
-//        "startDate": 1435636800,
-//        "endDate": 1436587200,
-//        "canonicalURL": "http:\/\/www.spike.com\/full-episodes\/w2h6j1\/lip-sync-battle-salt-vs-pepa-season-1-ep-109"
-//    },
-//    "hasExtras": true,
-//    "extrasURL": "http:\/\/api.spike.com\/feeds\/networkapp\/android\/episode\/items\/1.0\/mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157?types=extra&key=spikenetworkapp1.0",
-//    "extrasURLTimestamp": 1435669678
+    var contentRating:ContentRating
+    var distPolicy:DistroPolicy
+    var hasExtras:Bool // true,
+    var extrasURL:String? // "http:\/\/api.spike.com\/feeds\/networkapp\/android\/episode\/items\/1.0\/mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157?types=extra&key=spikenetworkapp1.0",
+    //    "extrasURLTimestamp": 1435669678
 }
 
-
+    struct DistroPolicy:CodableHashable {
+        var authTve: Bool // false,
+        var available: Bool //true,
+        var startDate: String //1435636800,
+        var endDate: String //1436587200,
+        var canonicalURL:String // "http:\/\/www.spike.com\/full-episodes\/w2h6j1\/lip-sync-battle-salt-vs-pepa-season-1-ep-109"
+    }
 
 struct VideoStreamingView: View {
-    @State private var streamingMode: StreamingMode = .standard
-    @State private var videoURL: URL?
-
+    @State  var streamingMode: StreamingMode = .standard
+    @State var videoURL: URL?
+    
     var body: some View {
         VStack {
             if streamingMode == .standard {
@@ -332,7 +359,7 @@ struct VideoStreamingView: View {
             } else {
                 VRVideoPlayer(url: videoURL)
             }
-
+            
             Picker("Mode", selection: $streamingMode) {
                 Text("Standard").tag(StreamingMode.standard)
                 Text("VR").tag(StreamingMode.vr)
@@ -343,24 +370,63 @@ struct VideoStreamingView: View {
     }
 }
 
+enum Networks{
+    case name
+}
+
 struct StandardVideoPlayer: View {
     let url: URL?
-
+    @State var isBranded = false
+    @State var network = Networks.name
+    @State var isDisplayShowing:Bool = false
+    @State var player = AVPlayer(url: URL(string: "") ?? URL(string: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4")!)
+    
     var body: some View {
+        //        let player = AVPlayer(url: url ?? URL(string: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4")!)
         if let url = url {
-            VideoPlayer(player: AVPlayer(url: url))
-                .onAppear {
-                    // Preload or buffer content for better performance
-                    preloadVideo(url: url)
-                }
+            switch isBranded {
+            case true:
+                //Branded version of the player:
+                // Preload or buffer content for better performance
+                //                        preloadVideo(url: url)
+                
+                brandedPlayer(brandUrl: url)
+            default:
+                //Default player:
+                standardPlayer(playerUrl: url)
+                //Here is where can make the video and controls overlay
+                //                                //Swap players run my own commercials a shit ton on things
+            }
         } else {
             Text("No video selected")
         }
     }
-
+    
     func preloadVideo(url: URL) {
         let player = AVPlayer(url: url)
         player.automaticallyWaitsToMinimizeStalling = true
+    }
+    
+    func standardPlayer(playerUrl:URL?)-> some View{
+        //        let std_player = AVPlayer(url: url ?? URL(string: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4")!)
+        //https://www.youtube.com/watch?v=FhpSo3URr50
+        let std_player = AVPlayer(url: playerUrl ?? URL(string: "https://www.youtube.com/watch?v=FhpSo3URr50")!)
+        return VideoPlayer(player: std_player )
+            .onAppear(perform: {
+                std_player.play()
+            })
+            .frame(width:300,height: 300).overlay(
+                //Here is where can make the video and controls overlay
+                //Swap players run my own commercials a shit ton on things
+                Rectangle().frame(width: 300, height: 300).foregroundColor(.orange).opacity(0.5))
+    }
+    
+    func brandedPlayer(brandUrl:URL?)-> some View{
+        return VideoPlayer(player: AVPlayer(url: brandUrl ?? URL(string: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4")!))
+            .frame(width:300,height: 300).overlay(
+                //Here is where can make the video and controls overlay
+                //Swap players run my own commercials a shit ton on things
+                Rectangle().frame(width: 300, height: 300).foregroundColor(.blue).opacity(0.5))
     }
 }
 
@@ -368,7 +434,8 @@ struct StandardVideoPlayer: View {
 struct VRVideoPlayer: View {
     let url: URL?
     @State private var player: AVPlayer?
-
+    @State var vr_interactionView:VRInteractionView = VRInteractionView(url: URL(string: ""))
+    
     var body: some View {
         if let url = url,isVRCompatible(videoURL: url) {
             SceneView(scene: createVRScene(url: url), options: [.allowsCameraControl])
@@ -376,22 +443,22 @@ struct VRVideoPlayer: View {
             Text("Invalid or non-VR video format")
         }
     }
-
+    
     func createVRScene(url: URL) -> SCNScene {
-            let scene = SCNScene()
-            
-            // Create a spherical geometry for VR projection
-            let sphereNode = SCNNode(geometry: SCNSphere(radius: 10))
-            sphereNode.geometry?.firstMaterial?.isDoubleSided = true
-
-            // Assign the video player as the texture for the sphere
-            let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.videoGravity = .resizeAspectFill
-            sphereNode.geometry?.firstMaterial?.diffuse.contents = playerLayer
-
-            scene.rootNode.addChildNode(sphereNode)
-            return scene
-        }
+        let scene = SCNScene()
+        
+        // Create a spherical geometry for VR projection
+        let sphereNode = SCNNode(geometry: SCNSphere(radius: 10))
+        sphereNode.geometry?.firstMaterial?.isDoubleSided = true
+        
+        // Assign the video player as the texture for the sphere
+        let playerLayer = AVPlayerLayer(player: player)
+        playerLayer.videoGravity = .resizeAspectFill
+        sphereNode.geometry?.firstMaterial?.diffuse.contents = playerLayer
+        
+        scene.rootNode.addChildNode(sphereNode)
+        return scene
+    }
     
     func isVRCompatible(videoURL: URL) -> Bool {
         // Basic check for equirectangular video (you can expand with metadata parsing)
@@ -399,19 +466,20 @@ struct VRVideoPlayer: View {
     }
     
     func setupPlayer(for url: URL) {
-            player = AVPlayer(url: url)
-            player?.automaticallyWaitsToMinimizeStalling = true
+        player = AVPlayer(url: url)
+        player?.automaticallyWaitsToMinimizeStalling = true
         player?.currentItem?.preferredForwardBufferDuration = 5.0 // Seconds
-            player?.play()
-        }
+        player?.play()
+    }
 }
 
 //MARK: - Basic Gaze Control with RealityKit:
 struct VRInteractionView: View {
     let url: URL?
-    @State private var interactionType: VRInteractionType = .controller
-    @State private var isPlaying: Bool = true
-
+    @State  var interactionType: VRInteractionType = .controller
+    @State  var isPlaying: Bool = true
+    @State var isDisplayShowing:Bool = false
+    
     var body: some View {
         ZStack {
             if let url = url {
@@ -419,11 +487,14 @@ struct VRInteractionView: View {
             } else {
                 Text("No VR video selected")
             }
-
-            if interactionType == .handTracking {
+            
+            switch interactionType{
+            case .handTracking:
                 Text("Hand Tracking Enabled").foregroundColor(.white)
-            } else if interactionType == .controller {
+            case .controller:
                 Text("Controller Mode").foregroundColor(.white)
+            case .none:
+                Text("Default Mode").foregroundColor(.white)
             }
         }
         .onAppear {
@@ -433,19 +504,19 @@ struct VRInteractionView: View {
             handleTap()
         }
     }
-
+    
     func initializeSDK() {
         // Initialize Meta SDK or custom hand/controller SDK
         print("Initializing VR SDK for interaction")
         // Example: Meta SDK setup or custom input manager
     }
-
+    
     func handleTap() {
         // Simulate play/pause toggle with interaction
         isPlaying.toggle()
         print("Toggled playback state")
     }
-
+    
     func createVRScene(url: URL) -> SCNScene {
         let scene = SCNScene()
         let sphereNode = SCNNode(geometry: SCNSphere(radius: 10))
@@ -470,11 +541,11 @@ struct VRInteractionView: View {
             seekBackward()
         case .swipeRight:
             seekForward()
-//        default:
-//            break
+            //        default:
+            //            break
         }
     }
-
+    
     func togglePlayPause() {
         isPlaying.toggle()
         print(isPlaying ? "Playing" : "Paused")
@@ -489,7 +560,7 @@ struct VRInteractionView: View {
         isPlaying.toggle()
         print(isPlaying ? "Playing" : "Paused")
     }
-
+    
     //MARK: Example: Controller Input
     //Bind buttons to actions, such as play/pause or seeking through video.
     
@@ -501,7 +572,7 @@ struct VRInteractionView: View {
             seekForward()
         case .backward:
             seekBackward()
-        
+            
         }
     }
 }

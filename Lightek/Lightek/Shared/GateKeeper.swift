@@ -26,6 +26,7 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
     @Published var timeRemaining = 60
     let defaultTimer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
     let showSplashScreenTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
+    @Published var video_manger = VideoManager()
 
         override init() {
             // Initialize isLoggedIn based on UserDefaults, defaulting to false
