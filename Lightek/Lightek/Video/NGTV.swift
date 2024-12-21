@@ -12,7 +12,9 @@ struct NGTV: View {
     @EnvironmentObject var gk:GateKeeper
     let url = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" //URL(string: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4")
     var body: some View {
-        gk.video_manger.videoPlayer(url: url).frame(width: 300, height: 300)
+        gk.video_manger.videoPlayer(url: url,vr:gk.video_manger.isVr).frame(width: 300, height: 300).onAppear {
+            gk.video_manger.isVr = false
+        }
         
 //        VideoPlayer(player: AVPlayer(url: url ?? URL(string: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4")!))
 //            .frame(width:300,height: 300).overlay(

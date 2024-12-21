@@ -215,163 +215,12 @@ struct VideoManager {
     var headlineConfig:HeadlineConfig?
     var binge:[Episode]?
     var video_stream_view:VideoStreamingView = VideoStreamingView()
+    @State var isVr = false
     
-    func videoPlayer(url:String)-> some View{
+    func videoPlayer(url:String,vr:Bool = false)-> some View{
         video_stream_view.videoURL = URL(string: url)
-        return StandardVideoPlayer(url: URL(string: url))
+        return vr ? AnyView(VRVideoPlayer(url: URL(string: url))): AnyView(StandardVideoPlayer(url: URL(string: url)))
     }
-}
-
-struct Favorites:CodableHashable{
-    var author:Int
-    var activityType:ActivityType
-    var item:Int
-    
-}
-
-//MARK: Nevaeh's stream of concience
-enum StreamingMode:CodableHashable {
-    case standard
-    case vr
-}
-
-enum ControllerButton:CodableHashable {
-    case playPause
-    case forward
-    case backward
-}
-
-enum GestureType:CodableHashable {
-    case pinch
-    case swipeLeft
-    case swipeRight
-}
-
-// Enum to represent interactions
-enum VRInteractionType:CodableHashable {
-    case none
-    case handTracking
-    case controller
-}
-
-//Activity type
-enum ActivityType:CodableHashable{
-    case episode
-    case video
-    case series
-    
-}
-struct ContentRating:CodableHashable {
-    var TVPG:String //"TV-14",
-    var Microsoft:String // "12",
-    var ESRB:String //"ESRB:T",
-    var PEGI:String // "PEGI:12"
-}
-struct PublishDate:CodableHashable {
-    var dateString:String // "2014-11-04T00:00:00-0500",
-    var timestamp:String // 1415077200
-}
-struct SeriesImage:CodableHashable{
-    var height:String // 1136,
-    var resizable:Bool // true,
-    var url:String // "http:\/\/4.images.spike.com\/tve\/lsb_iphone_series-pinned_031215.jpg",
-    var width:String // 640,
-    var aspectRatio:String // "9:16",
-    var type:String // "SeriesBannerPhone"
-}
-
-
-struct HeadlineConfig:CodableHashable {
-    var headline:String // "LIP SYNC",
-    var headline2:String // "BATTLE",
-    var tuneIn:String // "SPIKE SERIES",
-    var tuneIn2:String // "Thursdays At 10\/9C"
-}
-
-    struct ParentEntity:CodableHashable {
-        var entityType:String // "series",
-        var id:String // "mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a",
-        var title:String // "Lip Sync Battle"
-    }
-
-
-struct Series:CodableHashable {
-    var id:Int //"mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a"
-    var entityType:ActivityType // "series"
-    var title:String // "Lip Sync Battle"
-    var subTitle:String // "Lip Sync Battle"
-    var description:String // "Lip Sync Battle is already a huge viral sensation. Now Spike is taking it to the next level with its very own show, hosted by LL Cool J and with colorful commentary by social media maven and supermodel co-host, Chrissy Teigen. Each episode will feature two A-list celebrities like you've never seen them before - synching their hearts out in hysterically epic performances. The mic is off, the battle is on!"
-    var content_rating:ContentRating
-    var publishDate:PublishDate
-    var url:String // "http:\/\/api.spike.com\/feeds\/networkapp\/android\/series\/1.0\/mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a?key=spikenetworkapp1.0",
-    var urlTimestamp:String // 1436889723,
-    var images: [SeriesImage]
-    var headlineConfig:HeadlineConfig
-    var seasons:[Season]
-}
-
-struct Season:CodableHashable {
-    var episodes:[Episode]
-}
-
-struct Episode:CodableHashable {
-    var parentEntity:ParentEntity
-    //    "id": "mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157",
-    var title:String // "Salt vs. Pepa",
-    var subTitle:String // "Season 1, Ep 9",
-    var description:String // "Bandmates, friends and now...competitors! Hip hop legends Salt-N-Pepa go to battle for lip sync glory.",
-    //    "duration": {
-    //        "milliseconds": 1232000,
-    //        "timecode": "1232"
-    //    },
-    //    "entityType": "episode",
-    //    "publishDate": {
-    //        "dateString": "2015-05-22T07:00:00-04:00",
-    //        "timestamp": 1432292400
-    //    },
-    var url:String // "http:\/\/api.spike.com\/feeds\/networkapp\/android\/episode\/1.0\/mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157?key=spikenetworkapp1.0",
-    //    "urlTimestamp": 1435680345,
-    var authRequired:Bool // false,
-    var images: [SeriesImage]
-    var contentRating:ContentRating
-    var distPolicy:DistroPolicy
-    var hasExtras:Bool // true,
-    var extrasURL:String? // "http:\/\/api.spike.com\/feeds\/networkapp\/android\/episode\/items\/1.0\/mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157?types=extra&key=spikenetworkapp1.0",
-    //    "extrasURLTimestamp": 1435669678
-}
-
-    struct DistroPolicy:CodableHashable {
-        var authTve: Bool // false,
-        var available: Bool //true,
-        var startDate: String //1435636800,
-        var endDate: String //1436587200,
-        var canonicalURL:String // "http:\/\/www.spike.com\/full-episodes\/w2h6j1\/lip-sync-battle-salt-vs-pepa-season-1-ep-109"
-    }
-
-struct VideoStreamingView: View {
-    @State  var streamingMode: StreamingMode = .standard
-    @State var videoURL: URL?
-    
-    var body: some View {
-        VStack {
-            if streamingMode == .standard {
-                StandardVideoPlayer(url: videoURL)
-            } else {
-                VRVideoPlayer(url: videoURL)
-            }
-            
-            Picker("Mode", selection: $streamingMode) {
-                Text("Standard").tag(StreamingMode.standard)
-                Text("VR").tag(StreamingMode.vr)
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-        }
-    }
-}
-
-enum Networks{
-    case name
 }
 
 struct StandardVideoPlayer: View {
@@ -393,7 +242,8 @@ struct StandardVideoPlayer: View {
                 brandedPlayer(brandUrl: url)
             default:
                 //Default player:
-                standardPlayer(playerUrl: url)
+                VRVideoPlayer(url: URL(string: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4"))
+                //standardPlayer(playerUrl: url)
                 //Here is where can make the video and controls overlay
                 //                                //Swap players run my own commercials a shit ton on things
             }
@@ -576,6 +426,160 @@ struct VRInteractionView: View {
         }
     }
 }
+
+struct Favorites:CodableHashable{
+    var author:Int
+    var activityType:ActivityType
+    var item:Int
+    
+}
+
+//MARK: Nevaeh's stream of concience
+enum StreamingMode:CodableHashable {
+    case standard
+    case vr
+}
+
+enum ControllerButton:CodableHashable {
+    case playPause
+    case forward
+    case backward
+}
+
+enum GestureType:CodableHashable {
+    case pinch
+    case swipeLeft
+    case swipeRight
+}
+
+// Enum to represent interactions
+enum VRInteractionType:CodableHashable {
+    case none
+    case handTracking
+    case controller
+}
+
+//Activity type
+enum ActivityType:CodableHashable{
+    case episode
+    case video
+    case series
+    
+}
+struct ContentRating:CodableHashable {
+    var TVPG:String //"TV-14",
+    var Microsoft:String // "12",
+    var ESRB:String //"ESRB:T",
+    var PEGI:String // "PEGI:12"
+}
+struct PublishDate:CodableHashable {
+    var dateString:String // "2014-11-04T00:00:00-0500",
+    var timestamp:String // 1415077200
+}
+struct SeriesImage:CodableHashable{
+    var height:String // 1136,
+    var resizable:Bool // true,
+    var url:String // "http:\/\/4.images.spike.com\/tve\/lsb_iphone_series-pinned_031215.jpg",
+    var width:String // 640,
+    var aspectRatio:String // "9:16",
+    var type:String // "SeriesBannerPhone"
+}
+
+
+struct HeadlineConfig:CodableHashable {
+    var headline:String // "LIP SYNC",
+    var headline2:String // "BATTLE",
+    var tuneIn:String // "SPIKE SERIES",
+    var tuneIn2:String // "Thursdays At 10\/9C"
+}
+
+    struct ParentEntity:CodableHashable {
+        var entityType:String // "series",
+        var id:String // "mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a",
+        var title:String // "Lip Sync Battle"
+    }
+
+
+struct Series:CodableHashable {
+    var id:Int //"mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a"
+    var entityType:ActivityType // "series"
+    var title:String // "Lip Sync Battle"
+    var subTitle:String // "Lip Sync Battle"
+    var description:String // "Lip Sync Battle is already a huge viral sensation. Now Spike is taking it to the next level with its very own show, hosted by LL Cool J and with colorful commentary by social media maven and supermodel co-host, Chrissy Teigen. Each episode will feature two A-list celebrities like you've never seen them before - synching their hearts out in hysterically epic performances. The mic is off, the battle is on!"
+    var content_rating:ContentRating
+    var publishDate:PublishDate
+    var url:String // "http:\/\/api.spike.com\/feeds\/networkapp\/android\/series\/1.0\/mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a?key=spikenetworkapp1.0",
+    var urlTimestamp:String // 1436889723,
+    var images: [SeriesImage]
+    var headlineConfig:HeadlineConfig
+    var seasons:[Season]
+}
+
+struct Season:CodableHashable {
+    var episodes:[Episode]
+}
+
+struct Episode:CodableHashable {
+    var parentEntity:ParentEntity
+    //    "id": "mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157",
+    var title:String // "Salt vs. Pepa",
+    var subTitle:String // "Season 1, Ep 9",
+    var description:String // "Bandmates, friends and now...competitors! Hip hop legends Salt-N-Pepa go to battle for lip sync glory.",
+    //    "duration": {
+    //        "milliseconds": 1232000,
+    //        "timecode": "1232"
+    //    },
+    //    "entityType": "episode",
+    //    "publishDate": {
+    //        "dateString": "2015-05-22T07:00:00-04:00",
+    //        "timestamp": 1432292400
+    //    },
+    var url:String // "http:\/\/api.spike.com\/feeds\/networkapp\/android\/episode\/1.0\/mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157?key=spikenetworkapp1.0",
+    //    "urlTimestamp": 1435680345,
+    var authRequired:Bool // false,
+    var images: [SeriesImage]
+    var contentRating:ContentRating
+    var distPolicy:DistroPolicy
+    var hasExtras:Bool // true,
+    var extrasURL:String? // "http:\/\/api.spike.com\/feeds\/networkapp\/android\/episode\/items\/1.0\/mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157?types=extra&key=spikenetworkapp1.0",
+    //    "extrasURLTimestamp": 1435669678
+}
+
+    struct DistroPolicy:CodableHashable {
+        var authTve: Bool // false,
+        var available: Bool //true,
+        var startDate: String //1435636800,
+        var endDate: String //1436587200,
+        var canonicalURL:String // "http:\/\/www.spike.com\/full-episodes\/w2h6j1\/lip-sync-battle-salt-vs-pepa-season-1-ep-109"
+    }
+
+struct VideoStreamingView: View {
+    @State  var streamingMode: StreamingMode = .standard
+    @State var videoURL: URL?
+    
+    var body: some View {
+        VStack {
+            if streamingMode == .standard {
+                StandardVideoPlayer(url: videoURL)
+            } else {
+                VRVideoPlayer(url: videoURL)
+            }
+            
+            Picker("Mode", selection: $streamingMode) {
+                Text("Standard").tag(StreamingMode.standard)
+                Text("VR").tag(StreamingMode.vr)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+        }
+    }
+}
+
+enum Networks{
+    case name
+}
+
+
 
 
 
