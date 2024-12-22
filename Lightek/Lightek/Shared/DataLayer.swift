@@ -223,6 +223,28 @@ struct VideoManager {
     }
 }
 
+struct VideoStreamingView: View {
+    @State  var streamingMode: StreamingMode = .standard
+    @State var videoURL: URL?
+    
+    var body: some View {
+        VStack {
+            if streamingMode == .standard {
+                StandardVideoPlayer(url: videoURL)
+            } else {
+                VRVideoPlayer(url: videoURL)
+            }
+            
+            Picker("Mode", selection: $streamingMode) {
+                Text("Standard").tag(StreamingMode.standard)
+                Text("VR").tag(StreamingMode.vr)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+        }
+    }
+}
+
 struct StandardVideoPlayer: View {
     let url: URL?
     @State var isBranded = false
@@ -427,6 +449,7 @@ struct VRInteractionView: View {
     }
 }
 
+
 struct Favorites:CodableHashable{
     var author:Int
     var activityType:ActivityType
@@ -553,37 +576,68 @@ struct Episode:CodableHashable {
         var canonicalURL:String // "http:\/\/www.spike.com\/full-episodes\/w2h6j1\/lip-sync-battle-salt-vs-pepa-season-1-ep-109"
     }
 
-struct VideoStreamingView: View {
-    @State  var streamingMode: StreamingMode = .standard
-    @State var videoURL: URL?
-    
-    var body: some View {
-        VStack {
-            if streamingMode == .standard {
-                StandardVideoPlayer(url: videoURL)
-            } else {
-                VRVideoPlayer(url: videoURL)
-            }
-            
-            Picker("Mode", selection: $streamingMode) {
-                Text("Standard").tag(StreamingMode.standard)
-                Text("VR").tag(StreamingMode.vr)
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-        }
-    }
-}
+
 
 enum Networks{
     case name
 }
 
+struct AuthView:View {
+    @State var pollingTimer: Timer?
+    var body: some View{
+        Text("I am just here until Marlon can finish my view work.").onAppear {
+            startPolling()
+        }
+        .onDisappear {
+            stopPolling()
+        }
+        
+    }
+    
+    func startPolling() {
+        pollingTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) {  _ in
+            fetchAuthCode()
+        }
+    }
 
+    func stopPolling() {
+        pollingTimer?.invalidate()
+        pollingTimer = nil
+    }
 
+    func fetchAuthCode() {
+        let url = URL(string: "https://yourserver.com/check-auth-code")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
 
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Error fetching code: \(String(describing: error))")
+                return
+            }
 
+            if let code = String(data: data, encoding: .utf8), !code.isEmpty {
+                self.triggerLocalNotification(with: code)
+            }
+        }
+        task.resume()
+    }
 
+    func triggerLocalNotification(with code: String) {
+        let content = UNMutableNotificationContent()
+        content.title = "Your Authentication Code"
+        content.body = "Code: \(code)"
+        content.sound = .default
 
-
-
+        let request = UNNotificationRequest(
+            identifier: UUID().uuidString,
+            content: content,
+            trigger: nil
+        )
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error displaying notification: \(error)")
+            }
+        }
+    }
+}

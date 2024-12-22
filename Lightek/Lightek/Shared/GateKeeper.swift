@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import UIKit
+import UserNotifications
 
 class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
     let vinylCTRLYellow = Color("VinylCTRLYellow")
@@ -41,6 +42,14 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
         }
     
     //MARK: - functions
+    func requestNotificationPermissions() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
+            if let error = error {
+                print("Notification permission error: \(error)")
+            }
+        }
+    }
+    
     private func fetchData<T: HashableCodable>(url: URL, myObjectForCollection: T.Type) async -> [T] {
         do {
             var request = URLRequest(url: url)
@@ -185,6 +194,8 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
         case .active:
             print("App is active")
             // Perform actions when the app becomes active (e.g., resume tasks, refresh data).
+            print("request permissions for location notifications")
+            requestNotificationPermissions()
         case .inactive:
             print("App is inactive")
             // Perform actions when the app becomes inactive (e.g., pause tasks, save data).
