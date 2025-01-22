@@ -28,6 +28,7 @@ struct UserProfileView: View {
     @State var selectedSegment = 0
     @State var showSearch = false
     @State var menuItems:[ProfileSettingItem] = [ProfileSettingItem(title: "Edit Profile", iconImage: "chevron.right"),ProfileSettingItem(title: "Check availability", iconImage: "chevron.right"),ProfileSettingItem(title: "Transactions detail", iconImage: "chevron.right"),ProfileSettingItem(title: "Settings", iconImage: "chevron.right"),ProfileSettingItem(title: "Logout", iconImage: "chevron.right"),ProfileSettingItem(title: "Delete account", iconImage: "chevron.right")]
+    @State var showImagePicker = false
     var body: some View {
         NavigationView {
             ZStack{
@@ -71,7 +72,21 @@ struct UserProfileView: View {
                             ForEach(contentItems,id:\.self){ item in
                                 Group{
                                     HStack{
-                                    Circle().frame(width: 118, height: 121).foregroundColor(.yellow).overlay(Text("D").font(.system(size:104)))
+                                        Button{
+                                          print("::..Image upload called..::")
+                                            showImagePicker.toggle()
+                                        }label:{
+                                            //Add a user image url to the user profile model so we can pass it in here
+                                            if gk.profileImage == Image(systemName:"house"){
+                                                Circle().frame(width: 118, height: 121).foregroundColor(.yellow).overlay(Text("D").font(.system(size:104)))
+                                            }else{
+                                                //Replace with profile_image from the user profile model
+                                                gk.profileImage
+                                                    .resizable()
+                                                    .frame(width: 118, height: 121)
+                                            }
+                                        }
+                                    
                                     VStack(spacing:9){
                                         Text("\(item.user_profile.first_name ?? "") " + "\(item.user_profile.last_name ?? "")").foregroundColor(.white).font(.system(size:20))
                                             .padding(.bottom,9)
@@ -94,7 +109,23 @@ struct UserProfileView: View {
                                     ForEach(menuItems,id:\.self){menuItem in
                                         Group{
                                             Button {
-                                            //
+                                            //Switch on the menu items title to see what we doing on the trasition.
+                                                switch menuItem.title {
+                                                case "Edit Profile":
+                                                    showImagePicker.toggle()
+                                                case "Check availability":
+                                                    print("")
+                                                case "Transactions detail":
+                                                    print("")
+                                                case "Settings":
+                                                    print("")
+                                                case "Logout":
+                                                    print("")
+                                                case "Delete account":
+                                                    print("Aight you're out of here...DELETE!")
+                                                default:
+                                                    print("Pump fake")
+                                                }
                                         } label: {
                                             VStack{
                                                 HStack{
@@ -134,13 +165,17 @@ struct UserProfileView: View {
                                 NavigationLink(destination: Text("This is will be the detail view it goes to")) { HomeCell(imageURL: "") }
                             }
                         }
+                            
                         
                         //make a grid of produced items here:
                     }
+                    .fullScreenCover(isPresented: $showImagePicker) {
+                        ImageUploaderView(showImageUploader: $showImagePicker)
+                            }
                 }.foregroundColor(gk.vinylCTRLPurp)
             }
         }.onAppear{
-            gk.loadThatJson(myCodeableObject: User.self,id: gk.currentUser) { items in
+            gk.loadThatJson(myCodableObject: gk.currentUser,id: gk.currentUser.id) { items in
                 contentItems = items
             }
         }

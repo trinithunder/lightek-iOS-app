@@ -12,17 +12,68 @@ import SceneKit
 import AVKit
 
 protocol CodableHashable: Codable, Hashable {}
-
 typealias HashableCodable = CodableHashable
 
+enum A{case competitive, perfectionistic,highlymotivated }
+enum B {case relaxed, flexible, lessambitious}
+enum C {case conscientious /*but has difficulty expressing emotions*/}
+enum D {case pessimistic, anxious, pronetoisolation}
+enum PsychoanalyticPersonalities{
+    case psychopathic // (Antisocial)
+    case narcissistic
+    case schizoid
+    case paranoid
+    case depressive // and Manic *I may make manic it's own thing later or maybe not who knows, I'm high so we will see that's where there's comments here to help.
+    case masochistic // (Self-Defeating)
+    case obsessive // and Compulsive
+    case hysterical // (Histrionic)
+    case dissociative
+}
 enum Groups {
     case client
     case artist
 }
-
 enum PaymentMethod: String, CaseIterable {
     case applePay = "Apple Pay"
     case creditCard = "Credit Card"
+}
+//MARK: Nevaeh's stream of concience
+enum StreamingMode:CodableHashable {
+    case standard
+    case vr
+}
+enum ControllerButton:CodableHashable {
+    case playPause
+    case forward
+    case backward
+}
+enum GestureType:CodableHashable {
+    case pinch
+    case swipeLeft
+    case swipeRight
+}
+// Enum to represent interactions
+enum VRInteractionType:CodableHashable {
+    case none
+    case handTracking
+    case controller
+}
+//Activity type
+enum ActivityType:CodableHashable{
+    case episode
+    case video
+    case series
+    
+}
+enum Networks{
+    case name
+}
+enum ViewingMode{
+    
+}
+
+struct Root:CodableHashable{
+    var user:[User]
 }
 
 struct User:CodableHashable{
@@ -33,36 +84,6 @@ struct User:CodableHashable{
     var role:String
     var user_profile: UserProfile
 }
-
-struct ProfileSettingItem:CodableHashable{
-    var title:String
-    var iconImage:String
-}
-
-struct Requirement:CodableHashable{
-    var event_name:String
-    var event_type:String
-    var event_date_time:String
-    var duration:String
-    var location:String
-    var genre:String
-    var special_song:String
-    var additional_services:String
-    
-}
-
-struct Service:CodableHashable{
-    var service_name:String
-    var service_type:String
-    var service_description:String
-    var phone_number:String
-    var email:String
-    var budget:String
-    var availibility:String
-    var additional_services:String
-    
-}
-
 struct UserProfile:CodableHashable{
     var id:Int
     var first_name:String?
@@ -81,17 +102,63 @@ struct UserProfile:CodableHashable{
     var  willing_to_travel:Bool?
     var experience:String?
     var location:String?
+    var favorites:[Favorites]?
 }
-
+struct ProfileSettingItem:CodableHashable{
+    var title:String
+    var iconImage:String
+}
+struct PersonalityType{
+    var psychoanalytic:PsychoanalyticPersonalities?
+    var typeA:A?
+    var typeB:B?
+    var typeC:C?
+    var typeD:D?
+}
+struct Requirement:CodableHashable{
+    var event_name:String
+    var event_type:String
+    var event_date_time:String
+    var duration:String
+    var location:String
+    var genre:String
+    var special_song:String
+    var additional_services:String
+    
+}
+struct Service:CodableHashable{
+    var service_name:String
+    var service_type:String
+    var service_description:String
+    var phone_number:String
+    var email:String
+    var budget:String
+    var availibility:String
+    var additional_services:String
+    
+}
 struct Networking {
-    static let baseUrl = "http://localhost:3000"
+    static var baseUrl: String {
+        return getConfigValue(forKey: "BaseURL") ?? "http://localhost:3000"
+    }
+    
+    static var debuggingBaseUrl: String {
+        return getConfigValue(forKey: "DebuggingBaseURL") ?? "http://localhost:3000"
+    }
+    
+    private static func getConfigValue(forKey key: String) -> String? {
+        guard let path = Bundle.main.path(forResource: "Config", ofType: "plist"),
+              let xml = FileManager.default.contents(atPath: path),
+              let config = try? PropertyListDecoder().decode([String: String].self, from: xml) else {
+                  return nil
+              }
+        return config[key]
+    }
 }
-
 struct Routes{
     static let user_profile = "user_profile"
     static let users = "users"
 }
-
 struct Hubs {
     
     func onboarding()-> some View{
@@ -146,7 +213,6 @@ struct Hubs {
         return EmptyView()
     }
 }
-
 struct AsyncImageView: View {
     let imageURL: URL
     @State var imageWidth = 100.0
@@ -182,7 +248,6 @@ struct AsyncImageView: View {
         }
     }
 }
-
 extension Color {
     init?(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -198,7 +263,6 @@ extension Color {
         self.init(.sRGB, red: red, green: green, blue: blue, opacity: 1.0)
     }
 }
-
 //MARK: Nevaeh's video manager
 struct VideoManager {
     var streamingMode:StreamingMode?
@@ -222,7 +286,6 @@ struct VideoManager {
         return vr ? AnyView(VRVideoPlayer(url: URL(string: url))): AnyView(StandardVideoPlayer(url: URL(string: url)))
     }
 }
-
 struct VideoStreamingView: View {
     @State  var streamingMode: StreamingMode = .standard
     @State var videoURL: URL?
@@ -244,7 +307,6 @@ struct VideoStreamingView: View {
         }
     }
 }
-
 struct StandardVideoPlayer: View {
     let url: URL?
     @State var isBranded = false
@@ -301,8 +363,6 @@ struct StandardVideoPlayer: View {
                 Rectangle().frame(width: 300, height: 300).foregroundColor(.blue).opacity(0.5))
     }
 }
-
-
 struct VRVideoPlayer: View {
     let url: URL?
     @State private var player: AVPlayer?
@@ -344,7 +404,6 @@ struct VRVideoPlayer: View {
         player?.play()
     }
 }
-
 //MARK: - Basic Gaze Control with RealityKit:
 struct VRInteractionView: View {
     let url: URL?
@@ -448,45 +507,10 @@ struct VRInteractionView: View {
         }
     }
 }
-
-
 struct Favorites:CodableHashable{
     var author:Int
     var activityType:ActivityType
     var item:Int
-    
-}
-
-//MARK: Nevaeh's stream of concience
-enum StreamingMode:CodableHashable {
-    case standard
-    case vr
-}
-
-enum ControllerButton:CodableHashable {
-    case playPause
-    case forward
-    case backward
-}
-
-enum GestureType:CodableHashable {
-    case pinch
-    case swipeLeft
-    case swipeRight
-}
-
-// Enum to represent interactions
-enum VRInteractionType:CodableHashable {
-    case none
-    case handTracking
-    case controller
-}
-
-//Activity type
-enum ActivityType:CodableHashable{
-    case episode
-    case video
-    case series
     
 }
 struct ContentRating:CodableHashable {
@@ -507,22 +531,17 @@ struct SeriesImage:CodableHashable{
     var aspectRatio:String // "9:16",
     var type:String // "SeriesBannerPhone"
 }
-
-
 struct HeadlineConfig:CodableHashable {
     var headline:String // "LIP SYNC",
     var headline2:String // "BATTLE",
     var tuneIn:String // "SPIKE SERIES",
     var tuneIn2:String // "Thursdays At 10\/9C"
 }
-
-    struct ParentEntity:CodableHashable {
-        var entityType:String // "series",
-        var id:String // "mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a",
-        var title:String // "Lip Sync Battle"
-    }
-
-
+struct ParentEntity:CodableHashable {
+    var entityType:String // "series",
+    var id:String // "mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a",
+    var title:String // "Lip Sync Battle"
+}
 struct Series:CodableHashable {
     var id:Int //"mgid:arc:series:spike.com:a858471b-0ff9-4a7a-b98f-f152cc9f770a"
     var entityType:ActivityType // "series"
@@ -537,11 +556,9 @@ struct Series:CodableHashable {
     var headlineConfig:HeadlineConfig
     var seasons:[Season]
 }
-
 struct Season:CodableHashable {
     var episodes:[Episode]
 }
-
 struct Episode:CodableHashable {
     var parentEntity:ParentEntity
     //    "id": "mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157",
@@ -567,21 +584,13 @@ struct Episode:CodableHashable {
     var extrasURL:String? // "http:\/\/api.spike.com\/feeds\/networkapp\/android\/episode\/items\/1.0\/mgid:arc:episode:spike.com:094816ad-999e-496e-a5b8-4ead63c6b157?types=extra&key=spikenetworkapp1.0",
     //    "extrasURLTimestamp": 1435669678
 }
-
-    struct DistroPolicy:CodableHashable {
-        var authTve: Bool // false,
-        var available: Bool //true,
-        var startDate: String //1435636800,
-        var endDate: String //1436587200,
-        var canonicalURL:String // "http:\/\/www.spike.com\/full-episodes\/w2h6j1\/lip-sync-battle-salt-vs-pepa-season-1-ep-109"
-    }
-
-
-
-enum Networks{
-    case name
+struct DistroPolicy:CodableHashable {
+    var authTve: Bool // false,
+    var available: Bool //true,
+    var startDate: String //1435636800,
+    var endDate: String //1436587200,
+    var canonicalURL:String // "http:\/\/www.spike.com\/full-episodes\/w2h6j1\/lip-sync-battle-salt-vs-pepa-season-1-ep-109"
 }
-
 struct AuthView:View {
     @State var pollingTimer: Timer?
     var body: some View{
@@ -599,36 +608,36 @@ struct AuthView:View {
             fetchAuthCode()
         }
     }
-
+    
     func stopPolling() {
         pollingTimer?.invalidate()
         pollingTimer = nil
     }
-
+    
     func fetchAuthCode() {
         let url = URL(string: "https://yourserver.com/check-auth-code")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 print("Error fetching code: \(String(describing: error))")
                 return
             }
-
+            
             if let code = String(data: data, encoding: .utf8), !code.isEmpty {
                 self.triggerLocalNotification(with: code)
             }
         }
         task.resume()
     }
-
+    
     func triggerLocalNotification(with code: String) {
         let content = UNMutableNotificationContent()
         content.title = "Your Authentication Code"
         content.body = "Code: \(code)"
         content.sound = .default
-
+        
         let request = UNNotificationRequest(
             identifier: UUID().uuidString,
             content: content,
@@ -641,3 +650,152 @@ struct AuthView:View {
         }
     }
 }
+struct ImageMetaData:CodableHashable{
+    var test = ""
+}
+struct ImageUploaderView: View {
+    @State private var selectedImage: UIImage? = nil
+    @State  var isImagePickerPresented = false
+    @State private var isUploading = false
+    @State private var uploadSuccess = false
+    @EnvironmentObject var gk:GateKeeper
+    @Binding var showImageUploader:Bool
+    @State private var sampleData: [String: String] = ["name": "Test", "description": "Sample Data"]
+    @State var isUploadAvailiable = false
+
+    var body: some View {
+        VStack {
+            if let selectedImage = selectedImage {
+                Image(uiImage: selectedImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 200)
+                    .padding()
+            } else {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(height: 200)
+                    .overlay(
+                        Text("Select an Image")
+                            .foregroundColor(.gray)
+                    )
+            }
+
+            Button("Choose Image") {
+                isImagePickerPresented = true
+            }
+            .padding()
+            
+            Button("Testing shit"){
+                uploadSuccess = true
+            }
+            
+            Button("Save") {
+                isUploading = true
+                Task {
+                    let url = URL(string: "\(Networking.baseUrl)/upload")!
+                    let success = await gk.postThatJSON(
+                        url: url,
+                        body: ImageMetaData(),
+                        image: selectedImage
+                    )
+                    uploadSuccess = success
+                    isUploading = false
+                }
+            }
+            .disabled(selectedImage == nil || isUploading)
+            .padding()
+            .foregroundColor(.white)
+            .background(selectedImage == nil ? Color.gray : Color.blue)
+            .cornerRadius(10)
+            .opacity(selectedImage == nil ? 0:1)
+
+            if isUploading {
+                ProgressView("Uploading...")
+            } else if uploadSuccess {
+                Text("Upload Successful!")
+                    .foregroundColor(.green)
+                    .onAppear{
+                        showImageUploader.toggle()
+                    }
+                
+            }
+        }
+        .sheet(isPresented: $isImagePickerPresented) {
+            ImagePicker(image: $selectedImage)
+        }
+        .padding()
+        .onAppear{
+            gk.profileImage = Image(uiImage: (selectedImage ?? UIImage(systemName: "house"))!)
+        }
+        .onDisappear{
+            gk.profileImage = Image(uiImage: (selectedImage ?? UIImage(systemName: "house"))!)
+        }
+    }
+}
+struct ImagePicker: UIViewControllerRepresentable {
+    @Binding var image: UIImage?
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.delegate = context.coordinator
+        picker.sourceType = .photoLibrary
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+
+    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        let parent: ImagePicker
+
+        init(_ parent: ImagePicker) {
+            self.parent = parent
+        }
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+            if let selectedImage = info[.originalImage] as? UIImage {
+                parent.image = selectedImage
+            }
+            picker.dismiss(animated: true)
+        }
+    }
+}
+//MARK: View Template
+struct Template_View:View {
+    @State var header = Template_Header_View()
+    @State var content_body = Template_Content_Body_View()
+    @State var footer = Template_Footer_View()
+    var body: some View{
+        VStack(spacing:20){
+            header
+            content_body
+            footer
+        }
+    }
+}
+
+struct Template_Header_View:View {
+    var body: some View{
+        Text("")
+    }
+}
+
+struct Template_Content_Body_View:View {
+    var body: some View{
+        Text("")
+    }
+}
+
+struct Template_Footer_View:View {
+    var body: some View{
+        Text("")
+    }
+}
+
+
+
+

@@ -10,6 +10,7 @@ import SwiftUI
 struct SignUpView: View {
     @State var email = ""
     @State var password = ""
+    @EnvironmentObject var gk:GateKeeper
     var body: some View {
         NavigationView {
             ScrollView{
@@ -34,7 +35,7 @@ struct SignUpView: View {
                         .frame(width: UIScreen.main.bounds.width - 20,height:50)
                         .foregroundColor(Color.blue)
                         .overlay(Button("\(Text("Sign up").foregroundColor(Color.white))") {
-                            registerUser()
+                            registerUser(params: ["":""])
                         })
                     
                 }
@@ -44,8 +45,12 @@ struct SignUpView: View {
         
     }
     
-    func registerUser(){
-        
+    func registerUser(params:[String:Any]) {
+//        gk.postThatJson(parms: ["":""])
+        let imageData = ImageMetaData()
+        gk.loadThatJson(myCodableObject: imageData) { ResponseOb in
+            
+        }
     }
 }
 

@@ -21,13 +21,15 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
     @Published var isLoggedIn: Bool
     @Published var group:Groups = .client
     @Published var hubs = Hubs()
-    @Published var currentUser:Int = 2 //UserDefaults.standard.object(forKey: "currentUser") as? Int ?? 2
+    @Published var currentUser:User = User(id: 2, email: "", created_at: "", updated_at: "", role: "", user_profile: UserProfile(id: 2, user_id: 2, created_at: "", updated_at: "")) //UserDefaults.standard.object(forKey: "currentUser") as? Int ?? 2
     @Published var selectedPaymentMethod: PaymentMethod? = nil
     @Published var timerStatus = true
     @Published var timeRemaining = 60
     let defaultTimer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
     let showSplashScreenTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     @Published var video_manger = VideoManager()
+    let isDebuggin = true
+    @Published var profileImage = Image(systemName: "house")
 
         override init() {
             // Initialize isLoggedIn based on UserDefaults, defaulting to false
@@ -69,40 +71,96 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
         }
     }
     
-    func loadThatJson<T: HashableCodable>(myCodeableObject:T.Type,id:Int? = nil, block:( @escaping ([T]) ->())){
+//    func loadThatJson<T: HashableCodable>(myCodeableObject:T.Type,id:Int? = nil, block:( @escaping ([T]) ->())){
+//        Task.detached { [self] in
+//            // Background work
+//            print("Background thread: \(!Thread.isMainThread)")
+//
+//            // Determine URL based on the type of T
+//                    let urlString: String
+//                    switch T.self {
+//                    case is User.Type:
+//                        if let id = id {
+//                            urlString = "\(isDebuggin ? Networking.debuggingBaseUrl:Networking.baseUrl)/\(Routes.user_profile)/\(id)"
+//                                    } else {
+//                                        urlString = "\(Networking.baseUrl)/\(Routes.users)"
+//                                    }
+//                    case is UserProfile.Type:
+//                        urlString = "\(isDebuggin ? Networking.debuggingBaseUrl:Networking.baseUrl)/\(Routes.user_profile)/2"
+//                    default:
+//                        urlString = "\(isDebuggin ? Networking.debuggingBaseUrl:Networking.baseUrl)/default_route"
+//                    }
+//
+//                    // Fetch data
+//                    guard let url = URL(string: urlString) else {
+//                        print("Invalid URL")
+//                        return
+//                    }
+//
+//            let tempDataSource:[T] = await fetchData(url: url, myObjectForCollection: T.self)
+//
+//            await MainActor.run {
+//                            // Switch to main thread
+//                            print("Switched to main thread: \(Thread.isMainThread)")
+//                block(tempDataSource)
+//                        }
+//        }
+//    }
+    
+    func loadThatJson<T: HashableCodable>(myCodableObject: T, id: Int? = nil, block: @escaping ([T]) -> ()) {
         Task.detached { [self] in
             // Background work
             print("Background thread: \(!Thread.isMainThread)")
-            
+
             // Determine URL based on the type of T
-                    let urlString: String
-                    switch T.self {
-                    case is User.Type:
-                        if let id = id {
-                                        urlString = "\(Networking.baseUrl)/\(Routes.user_profile)/\(id)"
-                                    } else {
-                                        urlString = "\(Networking.baseUrl)/\(Routes.users)"
-                                    }
-                    case is UserProfile.Type:
-                        urlString = "\(Networking.baseUrl)/\(Routes.user_profile)/2"
-                    default:
-                        urlString = "\(Networking.baseUrl)/default_route"
-                    }
-                    
-                    // Fetch data
-                    guard let url = URL(string: urlString) else {
-                        print("Invalid URL")
-                        return
-                    }
-            
-            let tempDataSource:[T] = await fetchData(url: url, myObjectForCollection: T.self)
-            
+            let urlString: String
+            switch T.self {
+            case is User.Type:
+                if let id = id {
+                    urlString = "\(isDebuggin ? Networking.debuggingBaseUrl : Networking.baseUrl)/\(Routes.user_profile)/\(id)"
+                } else {
+                    urlString = "\(Networking.baseUrl)/\(Routes.users)"
+                }
+            case is UserProfile.Type:
+                urlString = "\(isDebuggin ? Networking.debuggingBaseUrl : Networking.baseUrl)/\(Routes.user_profile)/2"
+            default:
+                urlString = "\(isDebuggin ? Networking.debuggingBaseUrl : Networking.baseUrl)/default_route"
+            }
+
+            guard let url = URL(string: urlString) else {
+                print("Invalid URL")
+                return
+            }
+
+            // Prepare POST data
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            do {
+                request.httpBody = try JSONEncoder().encode(myCodableObject)
+            } catch {
+                print("Failed to encode object: \(error)")
+                return
+            }
+
+            // Fetch data
+            let tempDataSource: [T] = await fetchData(url: url, myObjectForCollection: T.self) //fetchData(urlRequest: request, myObjectForCollection: T.self)
+
             await MainActor.run {
-                            // Switch to main thread
-                            print("Switched to main thread: \(Thread.isMainThread)")
+                // Switch to main thread
+                print("Switched to main thread: \(Thread.isMainThread)")
                 block(tempDataSource)
-                        }
+            }
         }
+    }
+
+    
+    func postThatJson(parms:[String:Any]){
+        
+        if (parms["image"] != nil){
+         
+        }
+        
     }
     
     func logIn() {
@@ -188,6 +246,60 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
             return .failure(error)
         }
     }
+    
+     func postThatJSON<T: HashableCodable>(url: URL, body: T, image: UIImage? = nil) async -> Bool {
+        do {
+            var request = URLRequest(url: url)
+            request.allHTTPHeaderFields = ["Accept": "application/json"]
+            request.httpMethod = "POST"
+
+            let boundary = UUID().uuidString
+            var bodyData = Data()
+
+            if let image = image {
+                request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+                // Append image data
+                bodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
+                bodyData.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+                bodyData.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+                bodyData.append(image.jpegData(compressionQuality: 0.8)!)
+                bodyData.append("\r\n".data(using: .utf8)!)
+            }
+
+            // Append JSON body data
+            if let jsonData = try? JSONEncoder().encode(body) {
+                if image != nil {
+                    bodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
+                    bodyData.append("Content-Disposition: form-data; name=\"json\"\r\n".data(using: .utf8)!)
+                    bodyData.append("Content-Type: application/json\r\n\r\n".data(using: .utf8)!)
+                    bodyData.append(jsonData)
+                    bodyData.append("\r\n".data(using: .utf8)!)
+                } else {
+                    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                    bodyData = jsonData
+                }
+            }
+
+            if image != nil {
+                bodyData.append("--\(boundary)--\r\n".data(using: .utf8)!)
+            }
+
+            request.httpBody = bodyData
+
+            let (_, response) = try await URLSession.shared.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                print("Server error")
+                return false
+            }
+
+            return true
+        } catch {
+            print("Error in POST request: \(error)")
+            return false
+        }
+    }
+
 
     func handleAppStateChange(_ newPhase: ScenePhase) {
         switch newPhase {
