@@ -765,34 +765,121 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 }
 //MARK: View Template
+struct Header_Template_Item:CodableHashable {
+    var section_title:String?
+    var is_search:Bool
+    var search_title_text:String?
+    var search_sub_title_text:String?
+    var search_icon:String?
+    var border_color:String?
+    var border_width:Int?
+    
+    
+}
+struct Body_Template_Item:CodableHashable {
+    var content_cell_title:String?
+    var content_cell_sub_title:String?
+    var content_body_item:String?
+    
+}
+struct Footer_Template_Item:CodableHashable {
+    var footer_link_action:String
+    
+}
 struct Template_View:View {
     @State var header = Template_Header_View()
     @State var content_body = Template_Content_Body_View()
     @State var footer = Template_Footer_View()
+    @State var header_items:[Header_Template_Item] = []
+    @State var content_body_items:[Body_Template_Item] = []
+    @State var footer_content_items:[Footer_Template_Item] = []
+    @State var is_overlay_controls_active = false
+    @State var is_video_player_view = false
+    @State var is_submission_screen = false
+    @State var is_onboarding_screen = false
     var body: some View{
-        VStack(spacing:20){
-            header
-            content_body
-            footer
+        ScrollView{
+            VStack(spacing:20){
+                header.onAppear {
+                    //Set header items
+                    header.content_header_objects = header_items
+                }
+                content_body.onAppear {
+                    //Set content body items
+                    content_body.content_body_objects = content_body_items
+                }
+                footer.onAppear {
+                    //TODO: - Add a check in for controls is active, this being in here seems like a good way to take this generic template and turn it into a video player template and more.
+                    //Set the footer items
+                    if is_video_player_view{
+                        //Set video player controls here:
+                        //footer.content_footer_objects = footer_content_items
+                    }else{
+                        footer.content_footer_objects = footer_content_items
+                    }
+                    
+                }
+            }
         }
     }
 }
 
 struct Template_Header_View:View {
+    @State var content_header_text = "Hello world"
+    @State var content_header_objects:[Header_Template_Item] = []
     var body: some View{
-        Text("")
+        VStack{
+            Text(content_header_text)
+            HStack(spacing:10){
+                ForEach(content_header_objects,id:\.self){object in
+//                   Header_Template_Item(section_title: <#T##String?#>, is_search: <#T##Bool?#>, border_color: <#T##String?#>, border_width: <#T##Int?#>)
+                    Text(object.section_title ?? "")
+                    if object.is_search {
+                        //Style search header items
+                        
+                        Rectangle().frame(width: 300, height: 100).foregroundColor(.orange).overlay(
+                            HStack{
+                                Spacer().frame(width:10)
+                                Image(systemName: object.search_icon ?? "").foregroundColor(.white)
+                                Spacer()
+                            }
+                        )
+                    }else{
+                        //Non search styled header items
+                    }
+                }
+            }
+        }
     }
 }
 
 struct Template_Content_Body_View:View {
+    @State var content_body_text = "Hello world"
+    @State var content_body_objects:[Body_Template_Item] = []
     var body: some View{
-        Text("")
+        VStack(spacing:20){
+            Text(content_body_text)
+            ForEach(content_body_objects,id:\.self){object in
+                
+            }
+        }
     }
 }
 
 struct Template_Footer_View:View {
+    @State var content_footer_text = "Hello world"
+    @State var content_footer_objects:[Footer_Template_Item] = []
     var body: some View{
-        Text("")
+        ScrollView{
+            VStack{
+                Text(content_footer_text)
+                HStack(spacing:10){
+                    ForEach(content_footer_objects,id:\.self){object in
+                        
+                    }
+                }
+            }
+        }
     }
 }
 
