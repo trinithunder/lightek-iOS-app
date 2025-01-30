@@ -13,7 +13,7 @@ struct ChatView: View {
     var body: some View {
         NavigationView {
             ZStack{
-                gk.vinylCTRLDarkColor?.ignoresSafeArea()
+                gk.colorSystem.vinylCTRLDarkColor?.ignoresSafeArea()
                 ScrollView {
                     VStack(spacing:16){
                         ForEach(contentItems,id:\.self){ item in

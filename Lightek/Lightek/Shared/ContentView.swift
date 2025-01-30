@@ -28,7 +28,7 @@ struct ContentView: View {
     var body: some View {
         
        ZStack{
-           gk.vinylCTRLBlk.ignoresSafeArea()
+           gk.colorSystem.vinylCTRLBlk.ignoresSafeArea()
            TabView(selection: $selection) {
             HomeHub().tabItem { Text("Home") }.tag(1)
            BookingsView().tabItem { Text("Orders") }.tag(2)

@@ -11,7 +11,7 @@ struct BookingSummaryPaymentMethod: View {
     @EnvironmentObject var gk:GateKeeper
     var body: some View {
         ZStack{
-            gk.vinylCTRLDarkColor.ignoresSafeArea()
+            gk.colorSystem.vinylCTRLDarkColor.ignoresSafeArea()
             VStack(spacing:16){
                 Text("Payment Method").foregroundColor(.white).font(.largeTitle).fontWeight(.bold)
                 Spacer().frame(height:30)

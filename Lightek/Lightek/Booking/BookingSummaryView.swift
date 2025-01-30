@@ -21,7 +21,7 @@ struct BookingSummaryView: View {
     @EnvironmentObject var gk:GateKeeper
     var body: some View {
         ZStack{
-            gk.vinylCTRLDarkColor.ignoresSafeArea()
+            gk.colorSystem.vinylCTRLDarkColor.ignoresSafeArea()
             ScrollView{
                 VStack{
                     //Spacer().frame(height:10)

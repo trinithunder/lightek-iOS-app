@@ -32,7 +32,7 @@ struct UserProfileView: View {
     var body: some View {
         NavigationView {
             ZStack{
-                gk.vinylCTRLDarkColor.ignoresSafeArea()
+                gk.colorSystem.vinylCTRLDarkColor.ignoresSafeArea()
                 ScrollView {
                     VStack(spacing:20){
                         Button{
@@ -134,7 +134,7 @@ struct UserProfileView: View {
                                                         .padding(.leading,16)
                                                     Spacer()
                                                     Image(systemName:menuItem.iconImage).foregroundColor(.yellow)
-                                                        .background(Circle().frame(width:24,height:24).padding().foregroundColor(gk.vinylCTRLDarkColor)).padding(.trailing,16)
+                                                        .background(Circle().frame(width:24,height:24).padding().foregroundColor(gk.colorSystem.vinylCTRLDarkColor)).padding(.trailing,16)
                                                     
                                                     
                                                 }
@@ -172,7 +172,7 @@ struct UserProfileView: View {
                     .fullScreenCover(isPresented: $showImagePicker) {
                         ImageUploaderView(showImageUploader: $showImagePicker)
                             }
-                }.foregroundColor(gk.vinylCTRLPurp)
+                }.foregroundColor(gk.colorSystem.vinylCTRLPurp)
             }
         }.onAppear{
             gk.loadThatJson(myCodableObject: gk.currentUser,id: gk.currentUser.id) { items in
@@ -228,7 +228,7 @@ struct CustomHighlight: View {
             let segmentWidth = geometry.size.width / CGFloat(segmentCount)
             
             Rectangle()
-                .fill(gk.vinylCTRLYellow) // Color of the highlight
+                .fill(gk.colorSystem.vinylCTRLYellow) // Color of the highlight
                 .frame(width: segmentWidth, height: segmentHeight)
                 .offset(x: CGFloat(selectedIndex) * segmentWidth)
                 .animation(.easeInOut(duration: 0.3), value: selectedIndex)

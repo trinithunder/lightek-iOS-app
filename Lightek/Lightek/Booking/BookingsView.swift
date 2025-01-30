@@ -14,7 +14,7 @@ struct BookingsView: View {
     @State var contentItems:[HomeContentItem] = [HomeContentItem(),HomeContentItem(),HomeContentItem(),HomeContentItem()]
     var body: some View {
         ZStack{
-            gk.vinylCTRLDarkColor.ignoresSafeArea()
+            gk.colorSystem.vinylCTRLDarkColor.ignoresSafeArea()
             ScrollView{
                 VStack{
                     
@@ -65,7 +65,7 @@ struct BookingsView: View {
                               }
                 }
             }
-            .background(gk.vinylCTRLDarkColor)
+            .background(gk.colorSystem.vinylCTRLDarkColor)
             //.ignoresSafeArea()
                 }
             }

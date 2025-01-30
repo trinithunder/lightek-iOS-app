@@ -14,7 +14,7 @@ struct HomeHub: View {
         NavigationView{
             
                 ZStack{
-                    gk.vinylCTRLDarkColor.ignoresSafeArea()
+                    gk.colorSystem.vinylCTRLDarkColor.ignoresSafeArea()
                     ScrollView{
                         VStack{
 //                            Spacer().frame(height:100)
@@ -37,7 +37,7 @@ struct HomeHub: View {
                             Group{
                                 HStack{
                                     Text("Welcome, Mukul 👋").font(.system(size: 15))
-                                        .foregroundColor(gk.vinylCTRLYellow)
+                                        .foregroundColor(gk.colorSystem.vinylCTRLYellow)
                                         .padding(.leading,16)
                                     Spacer()
                                 }
@@ -82,7 +82,7 @@ struct HomeHub: View {
                                                     .fontWeight(.bold)
                                                 HStack{
                                                     Image(systemName: "clock")
-                                                        .foregroundColor(gk.vinylCTRLYellow)
+                                                        .foregroundColor(gk.colorSystem.vinylCTRLYellow)
                                                         .frame(width: 12, height: 12)
                                                         .padding(.leading,16)
                                                     Text("Tuesday, 10 Dec 2024 | 12:00 AM")
@@ -93,7 +93,7 @@ struct HomeHub: View {
                                                 }
                                                 HStack{
                                                     Image(systemName: "clock")
-                                                        .foregroundColor(gk.vinylCTRLYellow)
+                                                        .foregroundColor(gk.colorSystem.vinylCTRLYellow)
                                                         .frame(width: 12, height: 12)
                                                         .padding(.leading,16)
                                                     Text("123, XYZ street, Jakarta, Indonesia")
@@ -103,7 +103,7 @@ struct HomeHub: View {
                                                 }
                                                 .padding(.bottom,10)
                                                 HStack{
-                                                    Capsule().foregroundColor(gk.vinylCTRLYellow)
+                                                    Capsule().foregroundColor(gk.colorSystem.vinylCTRLYellow)
                                                         .frame(width:78,height:28)
                                                         .overlay(Text("$25-30").foregroundColor(.black).fontWeight(.bold))
                                                         .padding(.leading,16)

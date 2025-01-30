@@ -137,7 +137,7 @@ struct HomeView: View {
                               }
                 }
             }
-            .background(gk.vinylCTRLBlk)
+            .background(gk.colorSystem.vinylCTRLBlk)
             //.ignoresSafeArea()
         }
         

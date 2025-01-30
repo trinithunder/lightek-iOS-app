@@ -35,7 +35,9 @@ struct SignUpView: View {
                         .frame(width: UIScreen.main.bounds.width - 20,height:50)
                         .foregroundColor(Color.blue)
                         .overlay(Button("\(Text("Sign up").foregroundColor(Color.white))") {
-                            registerUser(params: ["":""])
+                            gk.currentUser.signup(email: email, password: password) { sign_up_status in
+                                //Most likely take sign_up_status and pass that to a binded object that will 
+                            }
                         })
                     
                 }

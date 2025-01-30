@@ -10,6 +10,10 @@ import SwiftUI
 import UIKit
 import SceneKit
 import AVKit
+import Combine
+import Security
+import AVFoundation
+import Network
 
 protocol CodableHashable: Codable, Hashable {}
 typealias HashableCodable = CodableHashable
@@ -83,6 +87,63 @@ struct User:CodableHashable{
     var updated_at: String
     var role:String
     var user_profile: UserProfile
+    
+    //Since you're already using Devise for authentication, we can build a simple token-based authentication system without adding unnecessary libraries. Here’s how we'll do it:
+    //
+    //Generate a Token on Login → When a user logs in via the Devise sign-in endpoint, issue a unique token and store it in the database.
+    //Authenticate Requests → Require the token in request headers for authentication.
+    //Allow Token Revocation → Users can log out and invalidate their token.
+    //    On login, store the token securely in Keychain.
+        func login(email: String, password: String) {
+            guard let url = URL(string: "https://your-backend.com/users/sign_in") else { return }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+            let body: [String: Any] = ["email": email, "password": password]
+            request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+            URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else { return }
+
+                if let json = try? JSONSerialization.jsonObject(with: data) as? [String: String],
+                   let token = json["token"] {
+                    KeychainHelper.shared.save(token, forKey: "authToken")  // Store token securely
+                }
+            }.resume()
+        }
+    
+    func signup(email: String, password: String,block:@escaping (Bool)->()) {
+        guard let url = URL(string: "https://your-backend.com/users/sign_in") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let body: [String: Any] = ["email": email, "password": password]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data, error == nil else { return block(false) }
+
+            if let json = try? JSONSerialization.jsonObject(with: data) as? [String: String],
+               let token = json["token"] {
+                KeychainHelper.shared.save(token, forKey: "authToken")  // Store token securely
+                block(true)
+            }
+        }.resume()
+    }
+}
+struct LoginTextContent{
+    var welcomeText = Text("Welcome back 👋")
+    var signInText = Text("Sign into your account")
+    var phoneNumberText = Text("Enter phone number")
+    var wrongNumberText = Text("Oops! Incorrect Phone Number try another one.")
+    var tosText = Text("By using VinylCTRL, you agree to the/n  Terms of Conditions and Privacy Policy.")
+    var loginText = Text("Login")
+    var noAccountText = Text("Don’t have an account? ")
+    var registerText = Text("Register")
 }
 struct UserProfile:CodableHashable{
     var id:Int
@@ -811,13 +872,7 @@ struct Template_View:View {
                 footer.onAppear {
                     //TODO: - Add a check in for controls is active, this being in here seems like a good way to take this generic template and turn it into a video player template and more.
                     //Set the footer items
-                    if is_video_player_view{
-                        //Set video player controls here:
-                        //footer.content_footer_objects = footer_content_items
-                    }else{
-                        footer.content_footer_objects = footer_content_items
-                    }
-                    
+                    (is_video_player_view ? (footer.content_footer_objects = []):(footer.content_footer_objects = footer_content_items))
                 }
             }
         }
@@ -869,6 +924,7 @@ struct Template_Content_Body_View:View {
 struct Template_Footer_View:View {
     @State var content_footer_text = "Hello world"
     @State var content_footer_objects:[Footer_Template_Item] = []
+    @State var display_controls = false
     var body: some View{
         ScrollView{
             VStack{
@@ -877,11 +933,737 @@ struct Template_Footer_View:View {
                     ForEach(content_footer_objects,id:\.self){object in
                         
                     }
+                    //Check if the player controls are active
+                    Text("Player controls will replace this view").opacity(display_controls ? 1:0)
                 }
             }
         }
     }
 }
+
+//MARK: - Sync management
+//MARK: How It Works:
+//The ACHClientState object automatically updates when values change (@Published).
+//The ACHClientView binds to ACHClientState, so any edits reflect in real-time.
+//Changes are stored in UserDefaults, persisting data across app launches.
+
+//Step 1: Define the ACHClient Struct
+//This struct will store the properties and conform to Codable for easy storage in UserDefaults:
+struct ACHClient: Codable {
+    var apiBaseURL: String
+    var apiKey: String
+}
+
+
+
+//Step 2: Create a UserDefaults Wrapper
+//This wrapper handles saving and loading from UserDefaults:
+class UserDefaultsManager {
+    static let shared = UserDefaultsManager()
+    
+    private let key = "achClient"
+
+    func save(achClient: ACHClient) {
+        if let encoded = try? JSONEncoder().encode(achClient) {
+            UserDefaults.standard.set(encoded, forKey: key)
+        }
+    }
+
+    func load() -> ACHClient? {
+        if let savedData = UserDefaults.standard.data(forKey: key),
+           let decoded = try? JSONDecoder().decode(ACHClient.self, from: savedData) {
+            return decoded
+        }
+        return nil
+    }
+}
+
+//Step 3: Make an ObservableObject for Live Updates
+//This will allow SwiftUI views to auto-update when the data changes:
+                                            
+//class ACHClientState: ObservableObject {
+//    @Published var achClient: ACHClient {
+//        didSet {
+//            UserDefaultsManager.shared.save(achClient: achClient)
+//        }
+//    }
+//
+//    init() {
+//        self.achClient = UserDefaultsManager.shared.load() ?? ACHClient(apiBaseURL: "", apiKey: "")
+//    }
+//}
+
+class ACHClientState: ObservableObject {
+    @Published var apiBaseURL: String = UserDefaults.standard.string(forKey: "apiBaseURL") ?? ""
+    @Published var apiKey: String = KeychainHelper.shared.load(forKey: "apiKey") ?? ""
+
+    func save() {
+        guard isValidURL(apiBaseURL) else {
+            print("Invalid API Base URL")
+            return
+        }
+        guard !apiKey.isEmpty else {
+            print("API Key cannot be empty")
+            return
+        }
+
+        UserDefaults.standard.set(apiBaseURL, forKey: "apiBaseURL")
+        KeychainHelper.shared.save(apiKey, forKey: "apiKey")
+    }
+
+    private func isValidURL(_ urlString: String) -> Bool {
+        guard let url = URL(string: urlString) else { return false }
+        return UIApplication.shared.canOpenURL(url)
+    }
+}
+
+//Step 4: SwiftUI View to Display and Edit ACHClient
+//This SwiftUI view will update in real-time when the data changes:
+//struct ACHClientView: View {
+//    @StateObject private var achClientState = ACHClientState()
+//
+//    var body: some View {
+//        VStack {
+//            Text("ACH Client Configuration")
+//                .font(.headline)
+//
+//            TextField("API Base URL", text: $achClientState.achClient.apiBaseURL)
+//                .textFieldStyle(RoundedBorderTextFieldStyle())
+//                .padding()
+//
+//            TextField("API Key", text: $achClientState.achClient.apiKey)
+//                .textFieldStyle(RoundedBorderTextFieldStyle())
+//                .padding()
+//
+//            Button("Save") {
+//                UserDefaultsManager.shared.save(achClient: achClientState.achClient)
+//            }
+//            .padding()
+//        }
+//        .padding()
+//    }
+//}
+
+//✅ Securely stores API key in Keychain
+//✅ Ensures valid input before saving
+//✅ Syncs changes with Rails backend
+
+struct ACHClientView: View {
+    @StateObject private var achClientState = ACHClientState()
+
+    var body: some View {
+        VStack {
+            Text("ACH Client Configuration")
+                .font(.headline)
+
+            TextField("API Base URL", text: $achClientState.apiBaseURL)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
+            TextField("API Key", text: $achClientState.apiKey)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            
+            Button("Fetch from Server") {
+                ACHClientAPI.shared.fetchACHClient { client in
+                    if let client = client {
+                        DispatchQueue.main.async {
+                            achClientState.apiBaseURL = client.apiBaseURL
+                            achClientState.apiKey = client.apiKey
+                            achClientState.save()
+                        }
+                    }
+                }
+            }
+            .padding()
+            
+            Button("Save & Sync") {
+                achClientState.save()
+                ACHClientAPI.shared.updateACHClient(apiBaseURL: achClientState.apiBaseURL, apiKey: achClientState.apiKey) { success in
+                    if success {
+                        print("Data successfully updated on server")
+                    }
+                }
+            }
+            .padding()
+        }
+        .padding()
+    }
+}
+
+
+//Step 1: Secure Storage Using Keychain
+//We'll create a KeychainHelper to securely store and retrieve the API key.
+//✅ Stores API key securely instead of UserDefaults
+//✅ Prevents unauthorized access to API keys
+
+//MARK: KeychainHelper:
+class KeychainHelper {
+    static let shared = KeychainHelper()
+
+    private func getKeychainQuery(forKey key: String) -> [CFString: Any] {
+        return [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccount: key,
+            kSecAttrService: Bundle.main.bundleIdentifier ?? "defaultService",
+        ]
+    }
+
+    func save(_ value: String, forKey key: String) {
+        let data = Data(value.utf8)
+        var query = getKeychainQuery(forKey: key)
+        query[kSecValueData] = data
+
+        SecItemDelete(query as CFDictionary)  // Remove existing item
+        SecItemAdd(query as CFDictionary, nil)  // Add new item
+    }
+
+    func load(forKey key: String) -> String? {
+        var query = getKeychainQuery(forKey: key)
+        query[kSecReturnData] = kCFBooleanTrue
+        query[kSecMatchLimit] = kSecMatchLimitOne
+
+        var result: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &result)
+
+        if status == errSecSuccess, let data = result as? Data {
+            return String(data: data, encoding: .utf8)
+        }
+        return nil
+    }
+
+    func delete(forKey key: String) {
+        let query = getKeychainQuery(forKey: key)
+        SecItemDelete(query as CFDictionary)
+    }
+}
+
+//Step 3: Fetch and Update from Rails Backend
+//We’ll add networking methods to:
+//
+//Fetch ACH client data from Rails backend
+//Update Rails backend with new ACH client details
+//✅ Fetches ACH client data from Rails backend
+//✅ Updates Rails backend when changes are made
+class ACHClientAPI {
+    static let shared = ACHClientAPI()
+
+    private let baseURL = "https://your-rails-backend.com/api/ach_clients"
+
+    func fetchACHClient(completion: @escaping (ACHClient?) -> Void) {
+        guard let url = URL(string: baseURL) else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data, error == nil else {
+                print("Fetch Error:", error?.localizedDescription ?? "Unknown error")
+                completion(nil)
+                return
+            }
+            
+            if let achClient = try? JSONDecoder().decode(ACHClient.self, from: data) {
+                DispatchQueue.main.async {
+                    completion(achClient)
+                }
+            }
+        }.resume()
+    }
+
+    func updateACHClient(apiBaseURL: String, apiKey: String, completion: @escaping (Bool) -> Void) {
+        guard let url = URL(string: baseURL) else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = ["api_base_url": apiBaseURL, "api_key": apiKey]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Update Error:", error.localizedDescription)
+                completion(false)
+                return
+            }
+            
+            completion(true)
+        }.resume()
+    }
+    
+    //MARK: Sending Authenticated Requests Include the token in headers:
+//    ✅ Token stored securely in Keychain
+//    ✅ All API calls include Authorization header
+    
+//    Final Overview
+//
+//    ✅ Secure Token Generation
+//    ✅ Login Issues Token
+//    ✅ Logout Invalidates Token
+//    ✅ Authenticated API Requests
+//    ✅ SwiftUI App Stores & Uses Token
+//
+//    🚀 Now your mobile users are securely authenticated with a simple and efficient token-based system! 🚀
+    
+    func fetchACHClients() {
+        guard let token = KeychainHelper.shared.load(forKey: "authToken"),
+              let url = URL(string: "https://your-backend.com/api/ach_clients") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data, error == nil else { return }
+            print(String(data: data, encoding: .utf8)!)
+        }.resume()
+    }
+}
+
+
+
+//MARK: Aight this where the heart of the streaming comes from, this is will be used for all streaming work not just phone service.
+
+//1️⃣ AVAudioRecorder Setup for Recording Audio
+//We'll set up the AVAudioRecorder to record audio in 1-second intervals or a desired clip length.
+//
+//Recording Audio Clip
+
+class AudioRecorder: NSObject, AVAudioRecorderDelegate {
+    var audioRecorder: AVAudioRecorder?
+    var audioFileURL: URL?
+    var recordingSession: AVAudioSession!
+    
+    func setupRecorder() {
+        recordingSession = AVAudioSession.sharedInstance()
+        
+        do {
+            try recordingSession.setCategory(.playAndRecord, mode: .default)
+            try recordingSession.setActive(true)
+            
+            let audioFilename = getDocumentsDirectory().appendingPathComponent("audio_clip.m4a")
+            audioFileURL = audioFilename
+            
+            let settings = [
+                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                AVSampleRateKey: 44100,
+                AVNumberOfChannelsKey: 1,
+                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+            ]
+            
+            audioRecorder = try AVAudioRecorder(url: audioFileURL!, settings: settings)
+            audioRecorder?.delegate = self
+            audioRecorder?.isMeteringEnabled = true
+        } catch {
+            print("Failed to set up audio recorder: \(error)")
+        }
+    }
+    
+    func startRecording() {
+        if let recorder = audioRecorder, !recorder.isRecording {
+            recorder.record()
+        }
+    }
+    
+    func stopRecording() {
+        if let recorder = audioRecorder, recorder.isRecording {
+            recorder.stop()
+        }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+}
+
+//2️⃣ AVPlayer Setup for Playlist Streaming
+//We'll use AVPlayer to stream the .m3u playlist once it’s created. You can load the playlist as an array of URLs.
+//
+//Streaming Playlist with AVPlayer
+
+class AudioPlayer: ObservableObject {
+    var player: AVPlayer?
+    var playerLayer: AVPlayerLayer?
+    var playlist: [URL] = []
+    
+    func setupPlayer(withPlaylist playlistURLs: [URL]) {
+        self.playlist = playlistURLs
+        
+        // Start playing the first item in the playlist
+        if let firstURL = playlist.first {
+            player = AVPlayer(url: firstURL)
+            playerLayer = AVPlayerLayer(player: player)
+            player?.play()
+        }
+    }
+    
+    func playNextClip() {
+        // Move to the next clip in the playlist
+        guard let currentItemIndex = playlist.firstIndex(of: player!.currentItem!.asset as! URL) else { return }
+        
+        let nextIndex = currentItemIndex + 1
+        if nextIndex < playlist.count {
+            player?.replaceCurrentItem(with: AVPlayerItem(url: playlist[nextIndex]))
+            player?.play()
+        } else {
+            endCall()  // End call if no more items in the playlist
+        }
+    }
+    
+    func endCall() {
+        // Handle the end of the conversation, sending the "end playlist"
+        print("Call ended. Sending end playlist.")
+        // Perform necessary actions like sending the end playlist to the server
+    }
+    
+    func pausePlayback() {
+        player?.pause()
+    }
+    
+    func resumePlayback() {
+        player?.play()
+    }
+    
+    func preloadMedia() {
+//        Preloading and Buffering
+//        To prevent interruptions during playback (especially when streaming), it's essential to preload the media and buffer enough data. You can configure AVPlayerItem to buffer some data before playback starts. This ensures smooth playback without interruptions.
+//
+//        We already set preferredForwardBufferDuration = 10.0, which means the player will buffer 10 seconds of media before starting playback. You can increase this duration if needed.
+        
+        //To ensure smooth playback, you’ll want to preload and buffer media files before starting playback. AVPlayer has built-in buffering mechanisms, but you can optimize it by setting proper buffer sizes and ensuring that you load the next media file before starting playback.
+        
+        //This will preload the audio file, keeping a buffer of 10 seconds to ensure smooth playback without interruption. You can tweak the preferredForwardBufferDuration to optimize for your use case.
+//
+//        Here’s how you handle preloading and buffering:
+        
+//    Note: You can increase the buffer duration based on the network speed or quality to prevent buffering issues.
+        
+            let url = URL(string: "https://your-server.com/audio_file.mp3")!
+            let playerItem = AVPlayerItem(url: url)
+            
+            // Preload the media item
+            playerItem.preferredForwardBufferDuration = 10.0 // 10 seconds buffer
+            
+            player = AVPlayer(playerItem: playerItem)
+        player?.play()
+            
+            // Optionally, you can check buffer progress to see if you're ready to play
+        player?.addObserver(self as! NSObject, forKeyPath: "status", options: .new, context: nil)
+        }
+
+        func adjustBitrateBasedOnNetwork() {
+//            Adjust Bitrate
+//            Here, we can adjust the streaming URL to switch between different quality streams depending on whether the device is connected to Wi-Fi or cellular. For this example, I’m using placeholder URLs for high and moderate bitrate audio files (high_quality_audio.mp3 and medium_quality_audio.mp3).
+//
+//            Wi-Fi Connection: Use a high-quality stream.
+//            Cellular Connection: Use a lower quality stream to save bandwidth.
+//            No Connection: Pause playback or handle the disconnection gracefully.
+//            When the network changes, you can call adjustBitrateBasedOnNetwork() to ensure the player switches to an appropriate bitrate.
+            
+            let networkManager = NetworkManager.shared
+
+            if networkManager.isReachable {
+                if networkManager.isOnWiFi {
+                    print("WiFi detected: Adjusting bitrate to high quality")
+                    // Change to high bitrate stream
+                    self.streamMedia(from: URL(string: "https://your-server.com/high_quality_audio.mp3")!)
+                } else {
+                    print("Cellular detected: Adjusting bitrate to moderate quality")
+                    // Change to moderate bitrate stream
+                    self.streamMedia(from: URL(string: "https://your-server.com/medium_quality_audio.mp3")!)
+                }
+            } else {
+                print("No network detected: Pausing playback")
+                // Pause media or handle no network connection
+                self.handleNoNetworkConnection()
+            }
+        }
+
+        func streamMedia(from url: URL) {
+            let playerItem = AVPlayerItem(url: url)
+            player?.replaceCurrentItem(with: playerItem)
+            player?.play()
+        }
+    
+    // Handle no network connection
+        func handleNoNetworkConnection() {
+            // Pause media playback
+            player?.pause()
+
+            // Show an alert to the user (or handle the UI in any way you prefer)
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "No Network", message: "You have lost network connectivity. Please check your connection.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+            }
+        }
+    
+}
+
+
+//3️⃣ Creating and Managing the Playlist
+//We'll create a function to manage the .m3u playlist, including adding new clips, creating the playlist file, and updating the file as clips are recorded.
+//
+//Updating the Playlist
+
+class PlaylistManager {
+    static let shared = PlaylistManager()
+    
+    func addClipToPlaylist(clipURL: URL, playlistURL: URL) {
+        var playlistContent = try? String(contentsOf: playlistURL, encoding: .utf8)
+        let newEntry = "#EXTINF:1, \(clipURL.lastPathComponent)\n\(clipURL.absoluteString)\n"
+        
+        if playlistContent == nil {
+            playlistContent = "#EXTM3U\n"
+        }
+        
+        playlistContent?.append(newEntry)
+        
+        do {
+            try playlistContent?.write(to: playlistURL, atomically: true, encoding: .utf8)
+        } catch {
+            print("Error writing to playlist: \(error)")
+        }
+    }
+    
+    func createPlaylist(for userId: String) -> URL {
+        let playlistURL = getDocumentsDirectory().appendingPathComponent("\(userId)_playlist.m3u")
+        return playlistURL
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+}
+
+
+//The "end call" feature can be triggered when either user decides to end the conversation. You’ll append an end_playlist.m3u file to indicate the end of the conversation.
+//
+//End Playlist Handling
+//You can just send the end playlist (end_playlist.m3u) to terminate the call on both sides:
+
+
+//Example for Background Task Handling in AudioRecorder
+//func startRecording() {
+//    DispatchQueue.global(qos: .background).async {
+//        // Background task: Recording audio
+//        self.audioRecorder?.record()
+//
+//        DispatchQueue.main.async {
+//            // Main thread: Update UI or handle UI-related tasks
+//            self.updateUIAfterRecording()
+//        }
+//    }
+//}
+
+//This way, you offload the recording task to a background thread, and once recording starts, you switch back to the main thread to update the UI (e.g., show a recording indicator).
+//
+//2️⃣ sendEndCallToServer Function
+//The sendEndCallToServer function will likely be part of your networking logic for terminating the call session. This function will send an "end call" signal to the server, which will broadcast that the call is over and close any active connections. This should be placed wherever you need to send the "end call" signal, typically when the user presses the "end call" button.
+//
+//Example of Ending the Call:
+
+//func sendEndCallToServer() {
+//    // Here, we would notify the server that the call is ending
+//    let url = URL(string: "https://your-server.com/end_call")!
+//    var request = URLRequest(url: url)
+//    request.httpMethod = "POST"
+//
+//    // Optionally send user data or session ID if needed
+//    let body = ["call_id": "12345", "user_id": "user_1"]
+//    request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
+//
+//    let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+//        if let error = error {
+//            print("Error ending call: \(error)")
+//            return
+//        }
+//
+//        // Handle the server response
+//        if let data = data {
+//            print("Server response: \(String(data: data, encoding: .utf8) ?? "No response")")
+//        }
+//    }
+//
+//    task.resume()
+//}
+
+//In this case, you’ll want to replace the URL with your actual backend endpoint, and modify the request body as needed (e.g., to include call/session information). This function should be called when the user ends the call, and it can also trigger the sending of the end playlist file.
+
+
+//Reachability
+//Since you're building a media streaming app, handling buffering and network reachability efficiently will be crucial. Here's a breakdown of what you might need:
+//
+//Reachability
+//You can use Apple's Network framework or the older Reachability framework to check network status. The code will adjust streaming parameters (like bitrate) based on available bandwidth.
+//
+//Here's a simple implementation using Reachability:
+//
+//Reachability Class
+
+//class NetworkManager {
+//    static let shared = NetworkManager()
+//
+//    var reachability: Reachability?
+//
+//    init() {
+//        reachability = try? Reachability()
+//
+//        // Monitor network reachability changes
+//        reachability?.whenReachable = { reachability in
+//            if reachability.connection == .wifi {
+//                // Wifi is available
+//                self.adjustBitrateForWiFi()
+//            } else if reachability.connection == .cellular {
+//                // Cellular network is available
+//                self.adjustBitrateForCellular()
+//            }
+//        }
+//
+//        reachability?.whenUnreachable = { _ in
+//            self.handleNoNetworkConnection()
+//        }
+//    }
+//
+//    func startMonitoring() {
+//        do {
+//            try reachability?.startNotifier()
+//        } catch {
+//            print("Unable to start reachability notifier")
+//        }
+//    }
+//
+//    func stopMonitoring() {
+//        reachability?.stopNotifier()
+//    }
+//
+//    private func adjustBitrateForWiFi() {
+//        // Adjust bitrate to a higher value for WiFi
+//        print("WiFi connected: Adjusting bitrate to high")
+//        // Set bitrate to higher value (e.g., 2-5 Mbps)
+//    }
+//
+//    private func adjustBitrateForCellular() {
+//        // Adjust bitrate to a lower value for cellular
+//        print("Cellular connected: Adjusting bitrate to moderate")
+//        // Set bitrate to a lower value (e.g., 1-2 Mbps)
+//    }
+//
+//    private func handleNoNetworkConnection() {
+//        // Handle when there's no network connection
+//        print("No network connection. Pausing playback or show error.")
+//        // Pause playback or display a message to the user
+//    }
+//}
+
+class NetworkManager {
+    static let shared = NetworkManager()
+    
+    private var monitor: NWPathMonitor?
+    private var queue: DispatchQueue?
+
+    var isReachable: Bool {
+        return monitor?.currentPath.status == .satisfied
+    }
+    
+    var isOnWiFi: Bool {
+        return monitor?.currentPath.isExpensive == false
+    }
+    
+    init() {
+        monitor = NWPathMonitor()
+        queue = DispatchQueue(label: "NetworkMonitorQueue")
+        monitor?.start(queue: queue!)
+        
+        monitor?.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                if path.isExpensive {
+                    print("Connected to cellular network")
+                    self.handleCellularConnection()
+                } else {
+                    print("Connected to Wi-Fi network")
+                    self.handleWiFiConnection()
+                }
+            } else {
+                print("No network connection")
+                self.handleNoNetworkConnection()
+            }
+        }
+    }
+    
+    func startMonitoring() {
+        monitor?.start(queue: queue!)
+    }
+    
+    func stopMonitoring() {
+        monitor?.cancel()
+    }
+    
+    private func handleWiFiConnection() {
+        // Handle WiFi connection (adjust bitrate, start streaming at higher quality)
+        print("WiFi connected: Adjusting bitrate to high")
+        // Adjust bitrate for WiFi here
+    }
+    
+    private func handleCellularConnection() {
+        // Handle Cellular connection (adjust bitrate, start streaming at lower quality)
+        print("Cellular connected: Adjusting bitrate to moderate")
+        // Adjust bitrate for cellular here
+    }
+    
+    private func handleNoNetworkConnection() {
+        // Handle no network connection
+        print("No network connection: Pausing streaming or showing error")
+        // Pause media streaming or show an error message
+    }
+}
+
+
+//This setup will monitor network changes (e.g., switching from WiFi to Cellular) and adjust the bitrate accordingly.
+
+
+
+//Here’s an example of how you might preload media:
+
+//func preloadMedia() {
+//    let url = URL(string: "https://your-server.com/audio_file.mp3")!
+//    let playerItem = AVPlayerItem(url: url)
+//    
+//    // Preload the media item
+//    playerItem.preferredForwardBufferDuration = 10.0 // 10 seconds buffer
+//    
+//    let player = AVPlayer(playerItem: playerItem)
+//    player.play()
+//    
+//    // Optionally, you can check buffer progress to see if you're ready to play
+//    player.addObserver(self, forKeyPath: "status", options: .new, context: nil)
+//}
+
+//Dynamic Bitrate Adjustment
+//Once you’ve implemented reachability, you can adjust the bit rate dynamically based on the current network speed.
+//This logic adjusts the media quality based on the user's current download speed.
+
+//For example, if you're using a media streaming server, you may want to request different qualities of the video/audio based on the network connection speed. You could use URLSession to monitor download speed and adjust the streaming URL accordingly:
+
+//func adjustBitrateBasedOnSpeed(currentSpeed: Double) {
+//    let bitrateThresholds = [1.0: "low_quality_url", 3.0: "medium_quality_url", 5.0: "high_quality_url"]
+//
+//    for (speed, url) in bitrateThresholds {
+//        if currentSpeed <= speed {
+//            self.streamMedia(from: URL(string: url)!)
+//            break
+//        }
+//    }
+//}
+//
+//func streamMedia(from url: URL) {
+//    let playerItem = AVPlayerItem(url: url)
+//    player.replaceCurrentItem(with: playerItem)
+//    player.play()
+//}
 
 
 

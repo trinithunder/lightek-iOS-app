@@ -11,7 +11,7 @@ struct BookingDetailsPaidTotal: View {
     @EnvironmentObject var gk:GateKeeper
     var body: some View {
         ZStack{
-            gk.vinylCTRLDarkColor?.ignoresSafeArea()
+            gk.colorSystem.vinylCTRLDarkColor?.ignoresSafeArea()
             VStack{
                 Group{
                     Text("Booking Details").foregroundColor(.white).fontWeight(.medium).font(.system(size: 28))
@@ -26,7 +26,7 @@ struct BookingDetailsPaidTotal: View {
                         HStack{
                             Spacer()
                             Text("Confirmed".uppercased())
-                                .foregroundColor(gk.vinylCTRLDarkColor)
+                                .foregroundColor(gk.colorSystem.vinylCTRLDarkColor)
                             .font(.system(size: 13))
                             .padding(.top,5)
                             .padding(.trailing,10)
@@ -42,10 +42,10 @@ struct BookingDetailsPaidTotal: View {
                             .foregroundColor(.yellow)
                         
                         Text("Jakarta, Indonesia")
-                            .foregroundColor(gk.vinlCTRLHintColor)
+                                .foregroundColor(gk.colorSystem.vinlCTRLHintColor)
                             .font(.system(size: 14))
                         Text("Tuesday, 10 Dec 2024")
-                            .foregroundColor(gk.vinlCTRLHintColor)
+                                .foregroundColor(gk.colorSystem.vinlCTRLHintColor)
                             .font(.system(size: 14))
                     }}
                     Spacer()
@@ -61,7 +61,7 @@ struct BookingDetailsPaidTotal: View {
                         Spacer()
                     }
                 Rectangle().frame(width: 358, height: 1)
-                    .foregroundColor(gk.vinlCTRLDarkColorStroke)
+                        .foregroundColor(gk.colorSystem.vinlCTRLDarkColorStroke)
                 }.padding(.bottom,14)
                 
                 Group{
@@ -70,11 +70,11 @@ struct BookingDetailsPaidTotal: View {
                         .fontWeight(.semibold)
                         .padding(.leading,16)
                         .font(.system(size: 14))
-                        .foregroundColor(gk.vinlCTRLHintColor)
+                        .foregroundColor(gk.colorSystem.vinlCTRLHintColor)
                     Spacer()
                         Text("$30.65")
                         Text("Paid".uppercased())
-                            .foregroundColor(gk.vinylCTRLDarkColor)
+                            .foregroundColor(gk.colorSystem.vinylCTRLDarkColor)
                             .font(.system(size: 13))
                             .padding(.top,5)
                             .padding(.trailing,10)
@@ -86,7 +86,7 @@ struct BookingDetailsPaidTotal: View {
                 }
                     //Spacer().frame(height:14)
             Rectangle().frame(width: 358, height: 1)
-                .foregroundColor(gk.vinlCTRLDarkColorStroke)
+                        .foregroundColor(gk.colorSystem.vinlCTRLDarkColorStroke)
                     
                 }.padding(.bottom,14)
                 
@@ -96,14 +96,14 @@ struct BookingDetailsPaidTotal: View {
                         .fontWeight(.semibold)
                         .padding(.leading,16)
                         .font(.system(size: 14))
-                        .foregroundColor(gk.vinlCTRLHintColor)
+                        .foregroundColor(gk.colorSystem.vinlCTRLHintColor)
                     Spacer()
                         Text("School Event")
                             .font(.system(size: 14))
                             .padding(.trailing,16)
                 }
             Rectangle().frame(width: 358, height: 1)
-                .foregroundColor(gk.vinlCTRLDarkColorStroke)
+                        .foregroundColor(gk.colorSystem.vinlCTRLDarkColorStroke)
                     
                 }.padding(.bottom,14)
                 
@@ -113,14 +113,14 @@ struct BookingDetailsPaidTotal: View {
                         .fontWeight(.semibold)
                         .padding(.leading,16)
                         .font(.system(size: 14))
-                        .foregroundColor(gk.vinlCTRLHintColor)
+                        .foregroundColor(gk.colorSystem.vinlCTRLHintColor)
                     Spacer()
                        Text("3:19")
                            .font(.system(size: 14))
                            .padding(.trailing,16)
                 }
             Rectangle().frame(width: 358, height: 1)
-                .foregroundColor(gk.vinlCTRLDarkColorStroke)
+                       .foregroundColor(gk.colorSystem.vinlCTRLDarkColorStroke)
                    
                }.padding(.bottom,14)
                 
@@ -130,14 +130,14 @@ struct BookingDetailsPaidTotal: View {
                         .fontWeight(.semibold)
                         .padding(.leading,16)
                         .font(.system(size: 14))
-                        .foregroundColor(gk.vinlCTRLHintColor)
+                        .foregroundColor(gk.colorSystem.vinlCTRLHintColor)
                     Spacer()
                         Text("1hr")
                             .font(.system(size: 14))
                             .padding(.trailing,16)
                 }
             Rectangle().frame(width: 358, height: 1)
-                .foregroundColor(gk.vinlCTRLDarkColorStroke)
+                        .foregroundColor(gk.colorSystem.vinlCTRLDarkColorStroke)
                     
                 }.padding(.bottom,14)
                 Group{
@@ -146,14 +146,14 @@ struct BookingDetailsPaidTotal: View {
                         .fontWeight(.semibold)
                         .padding(.leading,16)
                         .font(.system(size: 14))
-                        .foregroundColor(gk.vinlCTRLHintColor)
+                        .foregroundColor(gk.colorSystem.vinlCTRLHintColor)
                     Spacer()
                         Text("123, XYZ street,\n Jakarta, Indonesia")
                             .font(.system(size: 14))
                             .padding(.trailing,16)
                 }
             Rectangle().frame(width: 358, height: 1)
-                .foregroundColor(gk.vinlCTRLDarkColorStroke)
+                        .foregroundColor(gk.colorSystem.vinlCTRLDarkColorStroke)
                     
                 }.padding(.bottom,14)
                 
@@ -169,7 +169,7 @@ struct BookingDetailsPaidTotal: View {
                         RoundedRectangle(cornerRadius: 25)
                             .foregroundColor(.yellow)
                             .frame(width: 342, height: 60)
-                            .overlay(Text("Return to Home").foregroundColor(gk.vinylCTRLDarkColor))
+                            .overlay(Text("Return to Home").foregroundColor(gk.colorSystem.vinylCTRLDarkColor))
                     }
                     Spacer().frame(height:20)
                 }

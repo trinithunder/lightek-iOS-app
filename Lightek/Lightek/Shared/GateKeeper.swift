@@ -10,13 +10,23 @@ import SwiftUI
 import UIKit
 import UserNotifications
 
-class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
+struct ColorSystem{
     let vinylCTRLYellow = Color("VinylCTRLYellow")
     let vinylCTRLPurp = Color("VinylCTRLPurp")
     let vinylCTRLBlk = Color("VinylCTRLBlk")
     let vinylCTRLDarkColor = Color(hex: "131313")
     let vinlCTRLHintColor = Color(hex: "94a3b8")
     let vinlCTRLDarkColorStroke = Color(hex: "525b68")
+}
+
+class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
+//    let vinylCTRLYellow = Color("VinylCTRLYellow")
+//    let vinylCTRLPurp = Color("VinylCTRLPurp")
+//    let vinylCTRLBlk = Color("VinylCTRLBlk")
+//    let vinylCTRLDarkColor = Color(hex: "131313")
+//    let vinlCTRLHintColor = Color(hex: "94a3b8")
+//    let vinlCTRLDarkColorStroke = Color(hex: "525b68")
+    let colorSystem = ColorSystem()
     @Published var items:[AnyHashable] = []
     @Published var isLoggedIn: Bool
     @Published var group:Groups = .client
@@ -30,10 +40,13 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
     @Published var video_manger = VideoManager()
     let isDebuggin = true
     @Published var profileImage = Image(systemName: "house")
+    let networkManager = // Start monitoring network reachability
+    NetworkManager.shared
 
         override init() {
             // Initialize isLoggedIn based on UserDefaults, defaulting to false
             self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+            self.networkManager.startMonitoring()
             
             super.init()
 
@@ -163,9 +176,6 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
         
     }
     
-    func logIn() {
-            isLoggedIn = true
-        }
 
         func logOut() {
             isLoggedIn = false
@@ -306,6 +316,7 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
         case .active:
             print("App is active")
             // Perform actions when the app becomes active (e.g., resume tasks, refresh data).
+            self.networkManager.startMonitoring()
             print("request permissions for location notifications")
             requestNotificationPermissions()
         case .inactive:
@@ -313,6 +324,7 @@ class GateKeeper: NSObject, ObservableObject, UIApplicationDelegate {
             // Perform actions when the app becomes inactive (e.g., pause tasks, save data).
         case .background:
             print("App is in the background")
+            self.networkManager.stopMonitoring()
             // Perform actions when the app moves to the background (e.g., save state, release resources).
         @unknown default:
             print("Unexpected new phase")

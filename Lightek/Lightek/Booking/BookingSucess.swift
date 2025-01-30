@@ -11,7 +11,7 @@ struct BookingSucess: View {
     @EnvironmentObject var gk:GateKeeper
     var body: some View {
         ZStack{
-            gk.vinylCTRLDarkColor?.ignoresSafeArea()
+            gk.colorSystem.vinylCTRLDarkColor?.ignoresSafeArea()
             VStack{
                 Image(systemName: "checkmark")
                     .frame(width: 200, height: 140)
@@ -21,7 +21,7 @@ struct BookingSucess: View {
                     .fontWeight(.bold)
                 Spacer().frame(height:12)
                 Text("You’ve successfully accepted the booking request. Click the button below to view the booking details. Thank you!")
-                    .foregroundColor(gk.vinlCTRLHintColor)
+                    .foregroundColor(gk.colorSystem.vinlCTRLHintColor)
                     .font(.system(size: 14))
                 Spacer()
                 Button {
@@ -30,7 +30,7 @@ struct BookingSucess: View {
                     RoundedRectangle(cornerRadius: 25)
                         .foregroundColor(.yellow)
                         .frame(width: 342, height: 60)
-                        .overlay(Text("View Booking Details").foregroundColor(gk.vinylCTRLDarkColor))
+                        .overlay(Text("View Booking Details").foregroundColor(gk.colorSystem.vinylCTRLDarkColor))
                 }
 
                 Spacer().frame(height:20)

@@ -11,7 +11,7 @@ struct DCLaunchScreen: View {
     @EnvironmentObject var gk:GateKeeper
     var body: some View {
         ZStack{
-            gk.vinylCTRLBlk.ignoresSafeArea()
+            gk.colorSystem.vinylCTRLBlk.ignoresSafeArea()
             VStack{
                 HStack{
                     Text("2:38").foregroundColor(.blue)
